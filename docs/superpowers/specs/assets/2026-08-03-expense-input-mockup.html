@@ -1,0 +1,167 @@
+<h2>지출 항목, 어떻게 추가할까요?</h2>
+<p class="subtitle">하루에 여러 번 반복할 동작이라 가장 중요한 UX예요. 확정한 아이보리+파스텔 스타일을 적용해서 3가지 방식을 만들어봤어요.</p>
+
+<style>
+  .ex-phone {
+    width: 210px; margin: 0 auto;
+    background: #FDFBF7; border: 1px solid #ECE6DC; border-radius: 14px;
+    overflow: hidden; font-family: -apple-system, 'Pretendard', sans-serif;
+    color: #48453E; position: relative; height: 300px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  }
+  .ex-head { padding: 11px 12px 7px; }
+  .ex-label { font-size: 8px; letter-spacing: .18em; text-transform: uppercase; color: #ABA391; margin-bottom: 3px; }
+  .ex-date { font-size: 14px; font-weight: 700; color: #2B2A26; }
+  .ex-rule { height: 1px; background: #ECE6DC; margin-top: 8px; }
+  .ex-subtabs { display: flex; font-size: 9px; padding: 0 12px; margin-top: 8px; }
+  .ex-subtab { padding: 4px 10px; color: #ABA391; }
+  .ex-subtab.on { color: #2B2A26; font-weight: 700; border-bottom: 1.5px solid #2B2A26; }
+  .ex-body { padding: 8px 12px; font-size: 10px; }
+  .ex-item { display: flex; justify-content: space-between; align-items: center; padding: 7px 0; border-bottom: 1px solid #F2EEE6; }
+  .ex-tag { font-size: 8px; padding: 1px 7px; border-radius: 100px; }
+  .t-food { background: #FBE3D6; color: #B0664A; }
+  .t-cult { background: #E4E0F2; color: #5B4E8C; }
+  .t-sub  { background: #DDEBE0; color: #4A7C5E; }
+  .ex-total { display:flex; justify-content:space-between; padding-top: 9px; font-weight:700; color:#2B2A26; font-size:10px; }
+
+  .fab {
+    position: absolute; right: 12px; bottom: 42px;
+    width: 34px; height: 34px; border-radius: 50%;
+    background: #2B2A26; color: #FDFBF7;
+    display:flex; align-items:center; justify-content:center; font-size:17px;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.18);
+  }
+  .ex-tabs { position:absolute; bottom:0; left:0; right:0; display:flex; padding:7px 0; font-size:8px; border-top:1px solid #ECE6DC; color:#ABA391; background:#FDFBF7; }
+  .ex-tab { flex:1; text-align:center; }
+  .ex-tab.on { color:#2B2A26; font-weight:700; }
+
+  /* A: bottom sheet */
+  .sheet {
+    position:absolute; left:0; right:0; bottom:0;
+    background:#FFFDFA; border-top:1px solid #ECE6DC;
+    border-radius: 14px 14px 0 0; padding: 11px 12px 12px;
+    box-shadow: 0 -3px 14px rgba(0,0,0,0.10);
+  }
+  .sheet-amount { font-size: 21px; font-weight: 700; color:#2B2A26; text-align:right; margin-bottom: 9px; letter-spacing:-0.02em; }
+  .chip-row { display:flex; gap:4px; flex-wrap:wrap; margin-bottom: 9px; }
+  .chip { font-size:8px; padding:3px 8px; border-radius:100px; background:#F5F1EA; color:#8A8271; }
+  .chip.on { background:#FBE3D6; color:#B0664A; font-weight:700; }
+  .keypad { display:grid; grid-template-columns:repeat(3,1fr); gap:4px; }
+  .key { background:#F5F1EA; border-radius:6px; text-align:center; padding:6px 0; font-size:12px; color:#2B2A26; font-weight:600; }
+  .memo-line { border-bottom:1px solid #ECE6DC; padding:4px 0; font-size:9px; color:#C4BCA9; margin-bottom:9px; }
+
+  /* B: inline row */
+  .inline-new { border:1px dashed #DCD3C2; border-radius:7px; padding:7px 8px; margin-top:5px; background:#FFFDFA; }
+  .inline-field { display:flex; justify-content:space-between; align-items:center; padding:3px 0; font-size:9px; color:#C4BCA9; }
+  .inline-field b { color:#2B2A26; font-size:11px; }
+
+  /* C: full page */
+  .fullpage-head { display:flex; justify-content:space-between; align-items:center; padding:11px 12px; border-bottom:1px solid #ECE6DC; font-size:10px; }
+  .fp-field { padding:10px 12px; border-bottom:1px solid #F2EEE6; }
+  .fp-flabel { font-size:8px; letter-spacing:.14em; text-transform:uppercase; color:#ABA391; margin-bottom:4px; }
+  .fp-fval { font-size:13px; color:#2B2A26; font-weight:600; }
+  .fp-fval.ph { color:#C4BCA9; font-weight:400; font-size:11px; }
+</style>
+
+<div class="cards">
+
+  <!-- A -->
+  <div class="card" data-choice="bottom-sheet" onclick="toggleSelect(this)">
+    <div class="card-image">
+      <div class="ex-phone">
+        <div class="ex-head">
+          <div class="ex-label">Today</div>
+          <div class="ex-date">8월 3일 <span style="font-weight:400;opacity:.5">월</span></div>
+        </div>
+        <div class="ex-subtabs"><div class="ex-subtab">기록</div><div class="ex-subtab on">가계부</div></div>
+        <div class="ex-body">
+          <div class="ex-item"><span>커피 <span class="ex-tag t-food">식비</span></span><span>4,500</span></div>
+        </div>
+        <div class="sheet">
+          <div class="sheet-amount">12,000<span style="font-size:11px;opacity:.5">원</span></div>
+          <div class="chip-row">
+            <span class="chip on">식비</span><span class="chip">외식비</span><span class="chip">꾸밈비</span>
+            <span class="chip">문화생활</span><span class="chip">구독료</span><span class="chip">건강</span>
+          </div>
+          <div class="memo-line">메모 입력…</div>
+          <div class="keypad">
+            <div class="key">1</div><div class="key">2</div><div class="key">3</div>
+            <div class="key">4</div><div class="key">5</div><div class="key">6</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>A. 하단 시트 + 숫자 키패드</h3>
+      <p>＋ 버튼을 누르면 아래에서 시트가 올라옴. 금액 키패드가 바로 떠서 <b>탭 → 숫자 → 카테고리 칩 → 완료</b>로 3초 컷. 목록 화면을 벗어나지 않아 여러 건 연속 입력에 강함.</p>
+    </div>
+  </div>
+
+  <!-- B -->
+  <div class="card" data-choice="inline-row" onclick="toggleSelect(this)">
+    <div class="card-image">
+      <div class="ex-phone">
+        <div class="ex-head">
+          <div class="ex-label">Today</div>
+          <div class="ex-date">8월 3일 <span style="font-weight:400;opacity:.5">월</span></div>
+        </div>
+        <div class="ex-subtabs"><div class="ex-subtab">기록</div><div class="ex-subtab on">가계부</div></div>
+        <div class="ex-body">
+          <div class="ex-item"><span>커피 <span class="ex-tag t-food">식비</span></span><span>4,500</span></div>
+          <div class="ex-item"><span>영화 <span class="ex-tag t-cult">문화생활</span></span><span>14,000</span></div>
+          <div class="ex-item"><span>넷플릭스 <span class="ex-tag t-sub">구독료</span></span><span>5,500</span></div>
+          <div class="inline-new">
+            <div class="inline-field"><span>금액</span><b>0원</b></div>
+            <div class="inline-field"><span>카테고리</span><span>선택 ▾</span></div>
+            <div class="inline-field"><span>메모</span><span>입력…</span></div>
+          </div>
+          <div class="ex-total"><span>합계</span><span>24,000원</span></div>
+        </div>
+        <div class="ex-tabs"><div class="ex-tab on">오늘</div><div class="ex-tab">캘린더</div><div class="ex-tab">···</div></div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>B. 인라인 행 추가</h3>
+      <p>목록 맨 아래에 빈 행이 생기고 그 자리에서 바로 입력. 화면 전환이 아예 없어 맥락이 유지되지만, 모바일 키보드가 올라오면 입력칸이 가려지기 쉽고 칸이 좁아 오타가 나기 쉬움.</p>
+    </div>
+  </div>
+
+  <!-- C -->
+  <div class="card" data-choice="full-page" onclick="toggleSelect(this)">
+    <div class="card-image">
+      <div class="ex-phone">
+        <div class="fullpage-head">
+          <span style="color:#ABA391">취소</span>
+          <b style="color:#2B2A26">지출 추가</b>
+          <span style="color:#B0664A;font-weight:700">저장</span>
+        </div>
+        <div class="fp-field">
+          <div class="fp-flabel">Amount</div>
+          <div class="fp-fval">12,000원</div>
+        </div>
+        <div class="fp-field">
+          <div class="fp-flabel">Category</div>
+          <div class="chip-row" style="margin:0">
+            <span class="chip on">식비</span><span class="chip">외식비</span><span class="chip">꾸밈비</span>
+            <span class="chip">문화생활</span><span class="chip">구독료</span><span class="chip">건강</span>
+          </div>
+        </div>
+        <div class="fp-field">
+          <div class="fp-flabel">Memo</div>
+          <div class="fp-fval ph">점심 김치찌개</div>
+        </div>
+        <div class="fp-field">
+          <div class="fp-flabel">Payment · 선택</div>
+          <div class="fp-fval ph">카드 / 현금 / 계좌이체</div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>C. 전체화면 입력 페이지</h3>
+      <p>별도 페이지로 이동해 한 항목을 차분히 입력. 필드가 넓어 결제수단까지 편하게 넣을 수 있지만, 매번 페이지를 열고 닫아야 해서 여러 건 연속 입력엔 번거로움.</p>
+    </div>
+  </div>
+
+</div>
+
+<p class="subtitle" style="margin-top:16px">참고: 어느 방식이든 항목을 좌로 스와이프하면 삭제, 탭하면 수정으로 동작하게 할 예정입니다.</p>

@@ -1,0 +1,218 @@
+<h2>종이 다이어리 감성 — 어느 정도가 좋으세요?</h2>
+<p class="subtitle">공유해주신 레퍼런스의 "따뜻한 아이보리 + 얇은 선 + 넉넉한 여백" 방향으로 3가지 온도를 만들어봤어요. 실제 앱 화면(오늘 + 캘린더)에 적용한 모습입니다.</p>
+
+<style>
+  .paper-wrap { display: flex; gap: 10px; justify-content: center; }
+  .paper-phone {
+    width: 190px;
+    border-radius: 14px;
+    overflow: hidden;
+    font-family: -apple-system, 'Pretendard', sans-serif;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  }
+  .pp-head { padding: 12px 12px 8px; }
+  .pp-label {
+    font-size: 8px; letter-spacing: 0.18em; text-transform: uppercase;
+    margin-bottom: 3px;
+  }
+  .pp-date { font-size: 15px; font-weight: 700; letter-spacing: -0.01em; }
+  .pp-rule { height: 1px; margin: 8px 0 0; }
+  .pp-body { padding: 10px 12px 12px; font-size: 10px; }
+  .pp-section-label { font-size: 8px; letter-spacing: 0.14em; text-transform: uppercase; margin: 10px 0 5px; }
+  .pp-moods { display: flex; gap: 5px; font-size: 13px; }
+  .pp-mood-on { border-radius: 50%; padding: 1px 2px; }
+  .pp-line { padding: 5px 0; font-size: 10px; }
+  .pp-item { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; }
+  .pp-tag { font-size: 8px; padding: 1px 7px; border-radius: 100px; letter-spacing: 0.02em; }
+  .pp-cal { display: grid; grid-template-columns: repeat(7,1fr); gap: 3px; margin-top: 6px; }
+  .pp-cell { aspect-ratio: 1; border-radius: 5px; display:flex; align-items:center; justify-content:center; font-size: 8px; }
+  .pp-tabs { display: flex; padding: 7px 0; font-size: 8px; }
+  .pp-tab { flex:1; text-align:center; }
+
+  /* ── A. 따뜻한 아이보리 (레퍼런스에 가장 가까움) ── */
+  .pA { background: #FBF9F4; border: 1px solid #EAE4D8; }
+  .pA .pp-label, .pA .pp-section-label { color: #B0A692; }
+  .pA .pp-date { color: #2E2C27; }
+  .pA .pp-rule { background: #EAE4D8; }
+  .pA .pp-body { color: #4A473F; }
+  .pA .pp-mood-on { background: #F0E6CE; }
+  .pA .pp-item { border-bottom: 1px solid #F0EBE0; }
+  .pA .pp-tag { background: #F2EDE1; color: #8A7E63; }
+  .pA .pp-cell { background: #F4F0E6; color: #B0A692; }
+  .pA .pp-cell.h1 { background: #EDE2CB; color: #8A7E63; }
+  .pA .pp-cell.h2 { background: #DFCFA8; color: #5E5540; }
+  .pA .pp-cell.h3 { background: #C9B384; color: #FFF; }
+  .pA .pp-tabs { border-top: 1px solid #EAE4D8; color: #B0A692; }
+  .pA .pp-tab.on { color: #2E2C27; font-weight: 700; }
+
+  /* ── B. 아이보리 + 파스텔 카테고리 컬러 ── */
+  .pB { background: #FDFBF7; border: 1px solid #ECE6DC; }
+  .pB .pp-label, .pB .pp-section-label { color: #ABA391; }
+  .pB .pp-date { color: #2B2A26; }
+  .pB .pp-rule { background: #ECE6DC; }
+  .pB .pp-body { color: #48453E; }
+  .pB .pp-mood-on { background: #FBE3D6; }
+  .pB .pp-item { border-bottom: 1px solid #F2EEE6; }
+  .pB .pp-tag.food { background: #FBE3D6; color: #B0664A; }
+  .pB .pp-tag.save { background: #DDEBE0; color: #4A7C5E; }
+  .pB .pp-cell { background: #F5F1EA; color: #ABA391; }
+  .pB .pp-cell.h1 { background: #F7E7DC; color: #B0664A; }
+  .pB .pp-cell.h2 { background: #F0CFBB; color: #94523A; }
+  .pB .pp-cell.h3 { background: #DCA98D; color: #FFF; }
+  .pB .pp-tabs { border-top: 1px solid #ECE6DC; color: #ABA391; }
+  .pB .pp-tab.on { color: #2B2A26; font-weight: 700; }
+
+  /* ── C. 쿨 페이퍼 (회백색 + 세이지 포인트) ── */
+  .pC { background: #FAFAF8; border: 1px solid #E3E4DF; }
+  .pC .pp-label, .pC .pp-section-label { color: #A3A69D; }
+  .pC .pp-date { color: #26282A; }
+  .pC .pp-rule { background: #E3E4DF; }
+  .pC .pp-body { color: #45474A; }
+  .pC .pp-mood-on { background: #E0E8DE; }
+  .pC .pp-item { border-bottom: 1px solid #EDEEEA; }
+  .pC .pp-tag { background: #E6EBE4; color: #5A7059; }
+  .pC .pp-cell { background: #F0F1EE; color: #A3A69D; }
+  .pC .pp-cell.h1 { background: #E0E8DE; color: #5A7059; }
+  .pC .pp-cell.h2 { background: #BFD2BC; color: #40563F; }
+  .pC .pp-cell.h3 { background: #93B08F; color: #FFF; }
+  .pC .pp-tabs { border-top: 1px solid #E3E4DF; color: #A3A69D; }
+  .pC .pp-tab.on { color: #26282A; font-weight: 700; }
+</style>
+
+<div class="cards">
+
+  <!-- A -->
+  <div class="card" data-choice="warm-ivory" onclick="toggleSelect(this)">
+    <div class="card-image">
+      <div class="paper-wrap">
+        <div class="paper-phone pA">
+          <div class="pp-head">
+            <div class="pp-label">Today</div>
+            <div class="pp-date">8월 3일 <span style="font-weight:400;opacity:.5">월</span></div>
+            <div class="pp-rule"></div>
+          </div>
+          <div class="pp-body">
+            <div class="pp-section-label">Mood</div>
+            <div class="pp-moods">😔 😐 <span class="pp-mood-on">🙂</span> 😊 😄</div>
+            <div class="pp-section-label">Grateful</div>
+            <div class="pp-line">오랜만에 가족들과 저녁을 먹었다</div>
+            <div class="pp-section-label">Spending</div>
+            <div class="pp-item"><span>커피 <span class="pp-tag">식비</span></span><span>4,500</span></div>
+            <div class="pp-item"><span>지하철 <span class="pp-tag">교통비</span></span><span>1,400</span></div>
+          </div>
+          <div class="pp-tabs"><div class="pp-tab on">오늘</div><div class="pp-tab">캘린더</div><div class="pp-tab">즐겨찾기</div><div class="pp-tab">···</div></div>
+        </div>
+        <div class="paper-phone pA">
+          <div class="pp-head">
+            <div class="pp-label">Calendar</div>
+            <div class="pp-date">2026. 08</div>
+            <div class="pp-rule"></div>
+          </div>
+          <div class="pp-body">
+            <div class="pp-cal">
+              <div class="pp-cell h1">1</div><div class="pp-cell h2">2</div><div class="pp-cell h3">3</div><div class="pp-cell">4</div><div class="pp-cell h1">5</div><div class="pp-cell h2">6</div><div class="pp-cell">7</div>
+              <div class="pp-cell h1">8</div><div class="pp-cell">9</div><div class="pp-cell h3">10</div><div class="pp-cell h1">11</div><div class="pp-cell">12</div><div class="pp-cell h2">13</div><div class="pp-cell h1">14</div>
+              <div class="pp-cell">15</div><div class="pp-cell h2">16</div><div class="pp-cell h1">17</div><div class="pp-cell">18</div><div class="pp-cell h3">19</div><div class="pp-cell h1">20</div><div class="pp-cell">21</div>
+            </div>
+          </div>
+          <div class="pp-tabs"><div class="pp-tab">오늘</div><div class="pp-tab on">캘린더</div><div class="pp-tab">즐겨찾기</div><div class="pp-tab">···</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>A. 따뜻한 아이보리 (레퍼런스에 가장 가까움)</h3>
+      <p>크림색 종이 배경 + 베이지 헤어라인. 히트맵도 흑백이 아니라 모래빛 톤으로 진해집니다. 색을 거의 안 쓰고 톤만으로 정리한, 가장 다이어리다운 방향.</p>
+    </div>
+  </div>
+
+  <!-- B -->
+  <div class="card" data-choice="ivory-pastel" onclick="toggleSelect(this)">
+    <div class="card-image">
+      <div class="paper-wrap">
+        <div class="paper-phone pB">
+          <div class="pp-head">
+            <div class="pp-label">Today</div>
+            <div class="pp-date">8월 3일 <span style="font-weight:400;opacity:.5">월</span></div>
+            <div class="pp-rule"></div>
+          </div>
+          <div class="pp-body">
+            <div class="pp-section-label">Mood</div>
+            <div class="pp-moods">😔 😐 <span class="pp-mood-on">🙂</span> 😊 😄</div>
+            <div class="pp-section-label">Grateful</div>
+            <div class="pp-line">오랜만에 가족들과 저녁을 먹었다</div>
+            <div class="pp-section-label">Spending</div>
+            <div class="pp-item"><span>커피 <span class="pp-tag food">식비</span></span><span>4,500</span></div>
+            <div class="pp-item"><span>적금 <span class="pp-tag save">저축</span></span><span>300,000</span></div>
+          </div>
+          <div class="pp-tabs"><div class="pp-tab on">오늘</div><div class="pp-tab">캘린더</div><div class="pp-tab">즐겨찾기</div><div class="pp-tab">···</div></div>
+        </div>
+        <div class="paper-phone pB">
+          <div class="pp-head">
+            <div class="pp-label">Calendar</div>
+            <div class="pp-date">2026. 08</div>
+            <div class="pp-rule"></div>
+          </div>
+          <div class="pp-body">
+            <div class="pp-cal">
+              <div class="pp-cell h1">1</div><div class="pp-cell h2">2</div><div class="pp-cell h3">3</div><div class="pp-cell">4</div><div class="pp-cell h1">5</div><div class="pp-cell h2">6</div><div class="pp-cell">7</div>
+              <div class="pp-cell h1">8</div><div class="pp-cell">9</div><div class="pp-cell h3">10</div><div class="pp-cell h1">11</div><div class="pp-cell">12</div><div class="pp-cell h2">13</div><div class="pp-cell h1">14</div>
+              <div class="pp-cell">15</div><div class="pp-cell h2">16</div><div class="pp-cell h1">17</div><div class="pp-cell">18</div><div class="pp-cell h3">19</div><div class="pp-cell h1">20</div><div class="pp-cell">21</div>
+            </div>
+          </div>
+          <div class="pp-tabs"><div class="pp-tab">오늘</div><div class="pp-tab on">캘린더</div><div class="pp-tab">즐겨찾기</div><div class="pp-tab">···</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>B. 아이보리 + 파스텔 카테고리</h3>
+      <p>A와 같은 종이 배경이지만, 카테고리 태그마다 고유한 파스텔 색을 부여. 지출 목록이 길어져도 카테고리가 색으로 구분돼 눈에 잘 들어옵니다. 살짝 더 화사함.</p>
+    </div>
+  </div>
+
+  <!-- C -->
+  <div class="card" data-choice="cool-paper" onclick="toggleSelect(this)">
+    <div class="card-image">
+      <div class="paper-wrap">
+        <div class="paper-phone pC">
+          <div class="pp-head">
+            <div class="pp-label">Today</div>
+            <div class="pp-date">8월 3일 <span style="font-weight:400;opacity:.5">월</span></div>
+            <div class="pp-rule"></div>
+          </div>
+          <div class="pp-body">
+            <div class="pp-section-label">Mood</div>
+            <div class="pp-moods">😔 😐 <span class="pp-mood-on">🙂</span> 😊 😄</div>
+            <div class="pp-section-label">Grateful</div>
+            <div class="pp-line">오랜만에 가족들과 저녁을 먹었다</div>
+            <div class="pp-section-label">Spending</div>
+            <div class="pp-item"><span>커피 <span class="pp-tag">식비</span></span><span>4,500</span></div>
+            <div class="pp-item"><span>지하철 <span class="pp-tag">교통비</span></span><span>1,400</span></div>
+          </div>
+          <div class="pp-tabs"><div class="pp-tab on">오늘</div><div class="pp-tab">캘린더</div><div class="pp-tab">즐겨찾기</div><div class="pp-tab">···</div></div>
+        </div>
+        <div class="paper-phone pC">
+          <div class="pp-head">
+            <div class="pp-label">Calendar</div>
+            <div class="pp-date">2026. 08</div>
+            <div class="pp-rule"></div>
+          </div>
+          <div class="pp-body">
+            <div class="pp-cal">
+              <div class="pp-cell h1">1</div><div class="pp-cell h2">2</div><div class="pp-cell h3">3</div><div class="pp-cell">4</div><div class="pp-cell h1">5</div><div class="pp-cell h2">6</div><div class="pp-cell">7</div>
+              <div class="pp-cell h1">8</div><div class="pp-cell">9</div><div class="pp-cell h3">10</div><div class="pp-cell h1">11</div><div class="pp-cell">12</div><div class="pp-cell h2">13</div><div class="pp-cell h1">14</div>
+              <div class="pp-cell">15</div><div class="pp-cell h2">16</div><div class="pp-cell h1">17</div><div class="pp-cell">18</div><div class="pp-cell h3">19</div><div class="pp-cell h1">20</div><div class="pp-cell">21</div>
+            </div>
+          </div>
+          <div class="pp-tabs"><div class="pp-tab">오늘</div><div class="pp-tab on">캘린더</div><div class="pp-tab">즐겨찾기</div><div class="pp-tab">···</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>C. 쿨 페이퍼 (회백색 + 세이지)</h3>
+      <p>노란기 없는 회백색 종이에 차분한 세이지 그린 포인트. 아이보리보다 덜 아날로그하고 조금 더 담백/모던한 인상. 개발자 도구 느낌과 다이어리 감성의 중간.</p>
+    </div>
+  </div>
+
+</div>
+
+<p class="subtitle" style="margin-top:16px">셋 다 공통: 라이트 모드 전용 · 얇은 헤어라인 보더 · 대문자 레터스페이싱 섹션 라벨 · 히트맵은 배경톤 3단계로 지출 규모 표현</p>
