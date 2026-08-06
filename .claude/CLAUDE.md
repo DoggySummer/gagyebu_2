@@ -36,6 +36,7 @@ React 19 + TypeScript + Tailwind CSS v4 + Vite / Hono / Supabase(DB·Auth·Stora
 | `npm run build` | 프로덕션 빌드 (`tsc -b`로 app·node·server 프로젝트 전체 타입 검사 포함) |
 | `npm run lint` | ESLint 검사 |
 | `npx tsc -b` | 타입만 빠르게 검사 |
+| `npm run typecheck:api` | **`api/` 수정 시 필수.** Vercel과 같은 조건(tsconfig 무시 + nodenext)으로 검사 |
 
 ### DB
 | 명령어 | 설명 |
@@ -71,6 +72,7 @@ frontend/
 ```
 
 - **라우트를 파일로 쪼개지 않는다.** 새 엔드포인트는 `server/domains/`에 만들고 `server/app.ts`에서 `app.route(...)`로 붙인다. `api/`에 파일을 추가하는 일은 없음
+- **`api/` 아래 파일은 `tsconfig.server.json`이 적용되지 않는다.** Vercel이 자체 tsc 설정(`nodenext`, `@types/node` 없음)으로 컴파일하므로 상대 import는 `../server/app.js`처럼 **`.js` 확장자**를 붙이고, node 타입이나 `config.runtime`을 쓰지 않는다. 수정 후 `npm run typecheck:api`로 확인할 것
 - **서버 코드를 `src/` 안에 두지 않는다.** `src/`는 클라이언트 번들 대상이라 서버 전용 키가 브라우저로 새어나갈 수 있음
 - 생성된 DB 타입은 클라이언트도 직접 쓰므로 `shared/`에 둔다. 타입은 빌드 시 지워지므로 양쪽에서 import해도 번들에 남지 않음
 - import 별칭: `@/*` → `src/*`, `@shared/*` → `shared/*` (`tsconfig.app.json`의 paths + `vite.config.ts`의 alias 양쪽에 등록해야 동작). 서버 코드는 Vercel 번들러의 해석에 의존하지 않도록 `shared/`를 상대경로로 import
