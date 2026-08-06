@@ -12,6 +12,14 @@ dist
 dist-ssr
 *.local
 
+# 환경변수 (예시 파일만 커밋)
+.env
+.env.*
+!.env.example
+
+# Vercel
+.vercel
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
