@@ -1,3 +1,104 @@
-body {
-  margin: 0;
+@import 'tailwindcss';
+
+/* 스펙 타이포그래피가 쓰는 굵기(400/600/700)만 참조한다.
+   src/assets/fonts 의 나머지 굵기는 번들에 포함되지 않는다. */
+@font-face {
+  font-family: 'Paperlogy';
+  src: url('./assets/fonts/Paperlogy-4Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Paperlogy';
+  src: url('./assets/fonts/Paperlogy-6SemiBold.ttf') format('truetype');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Paperlogy';
+  src: url('./assets/fonts/Paperlogy-7Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@theme {
+  --font-sans:
+    'Paperlogy', -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Malgun Gothic',
+    sans-serif;
+
+  /* 표면 */
+  --color-canvas: #fdfbf7;
+  --color-surface: #fffdfa;
+  --color-hairline: #ece6dc;
+  --color-divider: #f2eee6;
+
+  /* 텍스트 */
+  --color-ink: #2b2a26;
+  --color-body: #48453e;
+  --color-muted: #aba391;
+  --color-placeholder: #c4bca9;
+
+  /* 칩 (미선택) */
+  --color-chip: #f5f1ea;
+  --color-chip-fg: #8a8271;
+
+  /* 카테고리 */
+  --color-cat-food-bg: #fbe3d6;
+  --color-cat-food-fg: #b0664a;
+  --color-cat-dining-bg: #fcebd0;
+  --color-cat-dining-fg: #a87a2f;
+  --color-cat-beauty-bg: #f7dfe6;
+  --color-cat-beauty-fg: #a85273;
+  --color-cat-culture-bg: #e4e0f2;
+  --color-cat-culture-fg: #5b4e8c;
+  --color-cat-subscription-bg: #dde7f2;
+  --color-cat-subscription-fg: #4a6e96;
+  --color-cat-health-bg: #ddebe0;
+  --color-cat-health-fg: #4a7c5e;
+
+  /* 히트맵 */
+  --color-heat-0: #f5f1ea;
+  --color-heat-1: #f7e7dc;
+  --color-heat-2: #f0cfbb;
+  --color-heat-3: #dca98d;
+
+  /* 타이포그래피 (375px 기준) */
+  --text-date: 22px;
+  --text-date--line-height: 1.3;
+  --text-label: 11px;
+  --text-label--line-height: 1.4;
+  --text-content: 15px;
+  --text-content--line-height: 1.6;
+  --text-amount: 32px;
+  --text-amount--line-height: 1.2;
+  --text-field: 16px;
+  --text-field--line-height: 1.5;
+
+  --tracking-title: -0.01em;
+  --tracking-label: 0.14em;
+
+  /* 모서리 반경 */
+  --radius-card: 10px;
+  --radius-sheet: 16px;
+  --radius-cell: 8px;
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    margin: 0;
+    background-color: var(--color-canvas);
+    color: var(--color-body);
+    font-family: var(--font-sans);
+    font-size: var(--text-content);
+    line-height: 1.6;
+  }
 }
