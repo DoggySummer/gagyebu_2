@@ -23,7 +23,7 @@ export function KakaoLoginButton() {
       <button
         type="button"
         onClick={handleLogin}
-        className="flex min-h-[44px] w-full items-center justify-center rounded-card bg-[#FEE500] px-4 text-field font-semibold text-[#191600]"
+        className="flex min-h-[44px] w-full items-center justify-center rounded-card bg-kakao px-4 text-field font-semibold text-kakao-fg"
       >
         카카오로 로그인
       </button>

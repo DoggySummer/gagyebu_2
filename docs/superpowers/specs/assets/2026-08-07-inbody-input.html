@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>인바디 입력 폼 목업</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: #ece7dc;
+    font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+    display: flex;
+    justify-content: center;
+    padding: 24px 0 60px;
+  }
+  .phone {
+    width: 390px;
+    max-width: 94vw;
+    background: #faf7ee;
+    border-radius: 28px;
+    overflow: hidden;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.18);
+  }
+  .statusbar {
+    background: #1a1a1a;
+    color: #fff;
+    font-size: 13px;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+  }
+  .topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 20px 4px;
+  }
+  .topbar .close { font-size: 20px; color: #9a9081; }
+  .topbar .title { font-size: 17px; font-weight: 800; color: #1a1a1a; }
+  .topbar .save {
+    font-size: 14px;
+    font-weight: 700;
+    color: #b0895a;
+  }
+  .content { padding: 10px 20px 0; }
+
+  .field {
+    margin-bottom: 16px;
+  }
+  .field label {
+    display: block;
+    font-size: 12.5px;
+    color: #9a9081;
+    margin-bottom: 6px;
+    font-weight: 600;
+  }
+  .input-box {
+    background: #f1ece0;
+    border-radius: 14px;
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .input-box .placeholder {
+    font-size: 16px;
+    color: #c0b8a5;
+  }
+  .input-box .filled {
+    font-size: 16px;
+    color: #1a1a1a;
+    font-weight: 700;
+  }
+  .input-box .unit-tag {
+    font-size: 13px;
+    color: #b0895a;
+    font-weight: 700;
+  }
+  .date-box {
+    background: #f1ece0;
+    border-radius: 14px;
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 16px;
+    font-weight: 700;
+    color: #1a1a1a;
+  }
+  .date-box .cal-icon { color: #b0895a; font-size: 15px; }
+
+  .divider {
+    border-top: 1px solid #e5dfd0;
+    margin: 22px 0 18px;
+  }
+  .section-label {
+    font-size: 12px;
+    color: #b8ac93;
+    font-weight: 700;
+    margin-bottom: 14px;
+  }
+
+  .save-btn-fixed {
+    margin: 24px 0 20px;
+    background: #1a1a1a;
+    color: #faf7ee;
+    text-align: center;
+    padding: 16px;
+    border-radius: 16px;
+    font-size: 15.5px;
+    font-weight: 700;
+  }
+
+  .note {
+    max-width: 390px;
+    margin: 14px auto 0;
+    font-size: 12.5px;
+    color: #8a8371;
+    text-align: center;
+    padding: 0 10px;
+  }
+</style>
+</head>
+<body>
+<div>
+  <div class="phone">
+    <div class="statusbar"><span>10:31</span><span>📶 82%</span></div>
+    <div class="topbar">
+      <span class="close">✕</span>
+      <span class="title">인바디 기록 추가</span>
+      <span class="save">저장</span>
+    </div>
+    <div class="content">
+
+      <div class="field">
+        <label>측정 날짜</label>
+        <div class="date-box">
+          <span>2026년 8월 7일</span>
+          <span class="cal-icon">📅</span>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+      <div class="section-label">체성분</div>
+
+      <div class="field">
+        <label>체중</label>
+        <div class="input-box">
+          <span class="placeholder">0.0</span>
+          <span class="unit-tag">kg</span>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>골격근량</label>
+        <div class="input-box">
+          <span class="filled">33.4</span>
+          <span class="unit-tag">kg</span>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>체지방량</label>
+        <div class="input-box">
+          <span class="placeholder">0.0</span>
+          <span class="unit-tag">kg</span>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>체지방률</label>
+        <div class="input-box">
+          <span class="placeholder">0.0</span>
+          <span class="unit-tag">%</span>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+      <div class="section-label">비만분석</div>
+
+      <div class="field">
+        <label>복부지방율</label>
+        <div class="input-box">
+          <span class="placeholder">0.00</span>
+          <span class="unit-tag">WHR</span>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>내장지방레벨</label>
+        <div class="input-box">
+          <span class="placeholder">0</span>
+          <span class="unit-tag">레벨</span>
+        </div>
+      </div>
+
+      <div class="save-btn-fixed">저장</div>
+    </div>
+  </div>
+  <div class="note">
+    숫자 키패드가 바로 뜨는 단순 입력 필드 6개 + 날짜 선택 1개, 총 7개 필드입니다.<br>
+    골격근량처럼 입력이 채워지면 굵은 글씨로, 비어있으면 흐린 플레이스홀더로 구분됩니다.
+  </div>
+</div>
+</body>
+</html>

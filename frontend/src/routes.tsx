@@ -7,6 +7,8 @@ import { LoginPage } from '@/domains/auth/LoginPage'
 import { CalendarPage } from '@/domains/calendar/CalendarPage'
 import { EntryPage } from '@/domains/entry/EntryPage'
 import { FavoritesPage } from '@/domains/favorite/FavoritesPage'
+import { InbodyFormPage } from '@/domains/inbody/InbodyFormPage'
+import { InbodyPage } from '@/domains/inbody/InbodyPage'
 import { MorePage } from '@/domains/more/MorePage'
 import { SettingsPage } from '@/domains/settings/SettingsPage'
 import { StatsPage } from '@/domains/stats/StatsPage'
@@ -26,9 +28,12 @@ export const routes: RouteObject[] = [
           { path: '/more', element: <MorePage /> },
           { path: '/favorites', element: <FavoritesPage /> },
           { path: '/stats', element: <StatsPage /> },
+          { path: '/stats/inbody', element: <InbodyPage /> },
           { path: '/settings', element: <SettingsPage /> },
         ],
       },
+      // 입력 화면은 목업대로 탭바 없이 단독으로 띄운다.
+      { path: '/stats/inbody/new', element: <InbodyFormPage /> },
     ],
   },
   { path: '*', element: <NotFoundPage /> },

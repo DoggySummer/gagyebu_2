@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import { Navigate, useParams } from 'react-router'
-import { useSession } from '@/domains/auth/useSession'
 import { NoteTab } from '@/domains/entry/NoteTab'
 import { useDailyLog } from '@/domains/entry/useDailyLog'
 import { ExpenseTab } from '@/domains/expense/ExpenseTab'
@@ -10,29 +9,23 @@ type SubTab = 'note' | 'expense'
 
 export function EntryPage() {
   const { date = '' } = useParams<{ date: string }>()
-  const { session } = useSession()
   const [tab, setTab] = useState<SubTab>('note')
 
   if (!isValidDateKey(date)) {
     return <Navigate to={`/entries/${todayKey()}`} replace />
   }
 
-  if (!session) {
-    return null
-  }
-
-  return <EntryScreen userId={session.user.id} date={date} tab={tab} onTabChange={setTab} />
+  return <EntryScreen date={date} tab={tab} onTabChange={setTab} />
 }
 
 interface ScreenProps {
-  userId: string
   date: string
   tab: SubTab
   onTabChange: (tab: SubTab) => void
 }
 
-function EntryScreen({ userId, date, tab, onTabChange }: ScreenProps) {
-  const log = useDailyLog(userId, date)
+function EntryScreen({ date, tab, onTabChange }: ScreenProps) {
+  const log = useDailyLog(date)
   const [favoriteError, setFavoriteError] = useState<string | null>(null)
 
   const handleFavorite = async () => {
@@ -45,7 +38,7 @@ function EntryScreen({ userId, date, tab, onTabChange }: ScreenProps) {
     }
   }
 
-  const isFavorite = log.entry?.is_favorite ?? false
+  const isFavorite = log.entry?.isFavorite ?? false
 
   return (
     <main className="py-5">
@@ -88,7 +81,7 @@ function EntryScreen({ userId, date, tab, onTabChange }: ScreenProps) {
           </p>
           <button
             type="button"
-            onClick={() => void log.reload()}
+            onClick={() => log.reload()}
             className="mt-3 min-h-[44px] rounded-card border border-hairline bg-surface px-4 text-field font-semibold text-body"
           >
             다시 시도

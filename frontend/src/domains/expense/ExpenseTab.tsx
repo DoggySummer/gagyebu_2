@@ -1,18 +1,17 @@
 import { useState } from 'react'
 import { CATEGORY_TAG_CLASS, type Category } from '@/lib/categories'
-import type { ExpenseRow } from '@/domains/entry/api'
-import type { ExpenseDraft } from '@/domains/expense/api'
 import { ExpenseSheet } from '@/domains/expense/ExpenseSheet'
+import type { ExpenseDto, ExpenseRequest } from '@shared/api.types'
 
 interface Props {
-  expenses: ExpenseRow[]
-  onAdd: (draft: ExpenseDraft) => Promise<void>
-  onEdit: (id: string, draft: ExpenseDraft) => Promise<void>
+  expenses: ExpenseDto[]
+  onAdd: (body: ExpenseRequest) => Promise<void>
+  onEdit: (id: string, body: ExpenseRequest) => Promise<void>
   onDelete: (id: string) => Promise<void>
 }
 
 export function ExpenseTab({ expenses, onAdd, onEdit, onDelete }: Props) {
-  const [sheet, setSheet] = useState<{ expense: ExpenseRow | null } | null>(null)
+  const [sheet, setSheet] = useState<{ expense: ExpenseDto | null } | null>(null)
 
   const total = expenses.reduce((sum, expense) => sum + expense.amount, 0)
 

@@ -23,6 +23,7 @@ React 19 + TypeScript + Tailwind CSS v4 + Vite / Hono / Supabase(DB·Auth·Stora
 - 캘린더는 서드파티 라이브러리 없이 Tailwind Grid로 직접 구현 — `MonthCalendar`, `DayCell`, `DayDetailPanel`
 - 캘린더 히트맵은 4단계. 해당 월 최대 지출 기준 상대값으로 계산하며 고정비·저축은 제외
 - **모바일 퍼스트, 라이트 모드 전용.** 다크모드 대응 코드를 넣지 않음. 아이보리 배경(`#FDFBF7`) 기반 컬러 토큰 사용
+- **색은 `src/index.css`의 `@theme` 토큰만 쓴다.** 임의 헥스를 컴포넌트에 박지 않는다. `docs/superpowers/specs/assets/2026-08-07-*.html` 목업은 다른 색 체계(`#FAF7EE`/`#F1ECE0`/`#DBA875`)를 쓰므로 **구성만 참고하고 색은 따르지 않는다** (2026-08-07 결정)
 - MVP 범위 밖: AI 통계 피드백, 여행 기록, 미디어 로그, 고정지출·저축 입력, 사진 첨부, 데스크톱 전용 레이아웃
 
 ## 자주 쓰는 명령어
@@ -31,8 +32,8 @@ React 19 + TypeScript + Tailwind CSS v4 + Vite / Hono / Supabase(DB·Auth·Stora
 | 명령어 | 설명 |
 |---|---|
 | `npm install` | 의존성 설치 (패키지 매니저는 npm 하나로 통일) |
-| `vercel dev` | **개발 시 기본으로 쓰는 명령.** 프론트 + `api/` 함수를 동일 오리진으로 실행 |
-| `npm run dev` | Vite만 실행. `/api` 요청은 처리되지 않으므로 UI만 볼 때 사용 |
+| `npm run dev` | **개발 시 기본으로 쓰는 명령.** Vite 개발 서버가 `/api`도 Hono로 처리한다 (`vite.config.ts`의 `honoDevServer` 플러그인). 서버 코드도 저장 즉시 반영됨 |
+| `vercel dev` | 배포와 동일한 함수 런타임으로 확인하고 싶을 때 |
 | `npm run build` | 프로덕션 빌드 (`tsc -b`로 app·node·server 프로젝트 전체 타입 검사 포함) |
 | `npm run lint` | ESLint 검사 |
 | `npx tsc -b` | 타입만 빠르게 검사 |
@@ -64,13 +65,16 @@ frontend/
     middleware/
   shared/               ← 클라이언트·서버가 함께 쓰는 타입
     database.types.ts   ← Supabase CLI 생성물, 수동 편집 금지
+    api.types.ts        ← API 요청·응답 DTO (camelCase). DB 로우와 분리
   src/                  ← React 전용 (클라이언트 번들 대상)
     routes.tsx          ← 라우트 정의 (RequireAuth → AppShell → 각 화면)
-    lib/                ← supabase 클라이언트, 날짜 유틸, 카테고리 상수
+    lib/api/client.ts   ← apiFetch. 모든 데이터 요청이 지나는 단일 통로
+    lib/                ← supabase 클라이언트(인증 전용), 날짜 유틸, 카테고리 상수
     domains/{도메인}/    ← 화면 단위 컴포넌트와 훅 (auth, entry, calendar, favorite, stats, settings, more)
     components/         ← 공용 UI (layout/, routing/)
 ```
 
+- **데이터 접근은 전부 Hono API를 지난다.** `src/`에서 supabase-js로 테이블을 직접 조회·수정하지 않는다. 화면 → `src/lib/api/client.ts`의 `apiFetch` → `/api/*` → `server/domains/*` 순서. 예외는 인증뿐이며, 로그인·로그아웃·세션 구독만 `src/domains/auth/`에서 supabase-js를 직접 쓴다
 - **라우트를 파일로 쪼개지 않는다.** 새 엔드포인트는 `server/domains/`에 만들고 `server/app.ts`에서 `app.route(...)`로 붙인다. `api/`에 파일을 추가하는 일은 없음
 - **`api/` 아래 파일은 `tsconfig.server.json`이 적용되지 않는다.** Vercel이 자체 tsc 설정(`nodenext`, `@types/node` 없음)으로 컴파일하므로 상대 import는 `../server/app.js`처럼 **`.js` 확장자**를 붙이고, node 타입이나 `config.runtime`을 쓰지 않는다. 수정 후 `npm run typecheck:api`로 확인할 것
 - **서버 코드를 `src/` 안에 두지 않는다.** `src/`는 클라이언트 번들 대상이라 서버 전용 키가 브라우저로 새어나갈 수 있음

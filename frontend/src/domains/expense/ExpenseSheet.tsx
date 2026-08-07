@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import { CATEGORIES, CATEGORY_TAG_CLASS, type Category } from '@/lib/categories'
-import type { ExpenseRow } from '@/domains/entry/api'
-import type { ExpenseDraft, PaymentMethod } from '@/domains/expense/api'
+import type { ExpenseDto, ExpenseRequest, PaymentMethod } from '@shared/api.types'
 
 const KEYPAD = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '00', '0', '←']
 
@@ -14,8 +13,8 @@ const PAYMENT_METHODS: { value: PaymentMethod; label: string }[] = [
 const MAX_AMOUNT = 100_000_000
 
 interface Props {
-  expense: ExpenseRow | null
-  onSubmit: (draft: ExpenseDraft) => Promise<void>
+  expense: ExpenseDto | null
+  onSubmit: (body: ExpenseRequest) => Promise<void>
   onDelete?: () => Promise<void>
   onClose: () => void
 }
@@ -27,9 +26,9 @@ export function ExpenseSheet({ expense, onSubmit, onDelete, onClose }: Props) {
   )
   const [memo, setMemo] = useState(() => expense?.memo ?? '')
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod | null>(
-    () => (expense?.payment_method as PaymentMethod | null) ?? null,
+    () => expense?.paymentMethod ?? null,
   )
-  const [showPayment, setShowPayment] = useState(() => Boolean(expense?.payment_method))
+  const [showPayment, setShowPayment] = useState(() => Boolean(expense?.paymentMethod))
   const [isBusy, setIsBusy] = useState(false)
   const [error, setError] = useState<string | null>(null)
 

@@ -1,6 +1,5 @@
 import { useRef } from 'react'
 import { Link, Navigate, useNavigate, useParams } from 'react-router'
-import { useSession } from '@/domains/auth/useSession'
 import { MonthCalendar } from '@/domains/calendar/MonthCalendar'
 import { shiftMonth } from '@/domains/calendar/monthGrid'
 import { useMonthSummary } from '@/domains/calendar/useMonthSummary'
@@ -14,7 +13,6 @@ function monthPath(year: number, month: number): string {
 
 export function CalendarPage() {
   const { year = '', month = '' } = useParams<{ year: string; month: string }>()
-  const { session } = useSession()
 
   if (!isValidYearMonth(year, month)) {
     const today = todayKey()
@@ -22,24 +20,12 @@ export function CalendarPage() {
     return <Navigate to={monthPath(Number(today.slice(0, 4)), Number(today.slice(5, 7)))} replace />
   }
 
-  if (!session) {
-    return null
-  }
-
-  return <CalendarScreen userId={session.user.id} year={Number(year)} month={Number(month)} />
+  return <CalendarScreen year={Number(year)} month={Number(month)} />
 }
 
-function CalendarScreen({
-  userId,
-  year,
-  month,
-}: {
-  userId: string
-  year: number
-  month: number
-}) {
+function CalendarScreen({ year, month }: { year: number; month: number }) {
   const navigate = useNavigate()
-  const { summary, isLoading, loadError, reload } = useMonthSummary(userId, year, month)
+  const { summary, isLoading, loadError, reload } = useMonthSummary(year, month)
   const touchStartX = useRef<number | null>(null)
 
   const previous = shiftMonth(year, month, -1)

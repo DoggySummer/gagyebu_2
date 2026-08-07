@@ -61,6 +61,10 @@
   --color-cat-health-bg: #ddebe0;
   --color-cat-health-fg: #4a7c5e;
 
+  /* 카카오 브랜드 (로그인 버튼 전용. 카카오 가이드라인이 정한 색이라 변경 불가) */
+  --color-kakao: #fee500;
+  --color-kakao-fg: #191600;
+
   /* 히트맵 */
   --color-heat-0: #f5f1ea;
   --color-heat-1: #f7e7dc;

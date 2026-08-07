@@ -1,5 +1,7 @@
 import { useRef, useState } from 'react'
-import type { DailyEntryRow, EntryDraft } from '@/domains/entry/api'
+import type { DailyEntryDto, UpdateEntryRequest } from '@shared/api.types'
+
+type EntryDraft = { moodScore: number | null; gratitude: string; noteMarkdown: string }
 
 const MOODS = [
   { score: 1, emoji: '😔' },
@@ -9,11 +11,11 @@ const MOODS = [
   { score: 5, emoji: '😄' },
 ]
 
-function toDraft(entry: DailyEntryRow | null): EntryDraft {
+function toDraft(entry: DailyEntryDto | null): EntryDraft {
   return {
-    moodScore: entry?.mood_score ?? null,
+    moodScore: entry?.moodScore ?? null,
     gratitude: entry?.gratitude ?? '',
-    noteMarkdown: entry?.note_markdown ?? '',
+    noteMarkdown: entry?.noteMarkdown ?? '',
   }
 }
 
@@ -44,8 +46,8 @@ function wrapBold(text: string, start: number, end: number) {
 }
 
 interface Props {
-  entry: DailyEntryRow | null
-  onSave: (draft: EntryDraft) => Promise<void>
+  entry: DailyEntryDto | null
+  onSave: (body: UpdateEntryRequest) => Promise<void>
 }
 
 export function NoteTab({ entry, onSave }: Props) {

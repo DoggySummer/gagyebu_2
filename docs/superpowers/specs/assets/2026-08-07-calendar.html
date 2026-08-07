@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>캘린더 하단 월간평가 목업</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: #ece7dc;
+    font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+    display: flex;
+    justify-content: center;
+    padding: 24px 0 60px;
+  }
+  .phone {
+    width: 390px;
+    max-width: 94vw;
+    background: #faf7ee;
+    border-radius: 28px;
+    overflow: hidden;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.18);
+  }
+  .statusbar {
+    background: #1a1a1a;
+    color: #fff;
+    font-size: 13px;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+  }
+  .content {
+    padding: 22px 20px 0;
+  }
+  .month-title {
+    font-size: 30px;
+    font-weight: 800;
+    text-align: center;
+    margin-bottom: 18px;
+    color: #1a1a1a;
+  }
+  .cal-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 6px;
+    margin-bottom: 22px;
+  }
+  .cal-day-label {
+    text-align: center;
+    font-size: 13px;
+    color: #b8b0a0;
+    padding-bottom: 8px;
+  }
+  .cal-cell {
+    aspect-ratio: 1;
+    background: #f1ece0;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    color: #a89f8d;
+  }
+  .cal-cell.today {
+    background: #dba875;
+    color: #1a1a1a;
+    font-weight: 700;
+  }
+  .cal-cell.filled {
+    color: #1a1a1a;
+    font-weight: 600;
+  }
+  .cal-cell.empty { visibility: hidden; }
+
+  /* ===== 월간 평가 섹션 (신규) ===== */
+  .section-divider {
+    border-top: 1px solid #e5dfd0;
+    margin: 8px 0 20px;
+    padding-top: 20px;
+  }
+  .section-label {
+    font-size: 13px;
+    color: #b8ac93;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+    margin-bottom: 12px;
+  }
+  .summary-row {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+  .summary-card {
+    flex: 1;
+    background: #f1ece0;
+    border-radius: 16px;
+    padding: 14px 14px;
+  }
+  .summary-card .label {
+    font-size: 12px;
+    color: #9a9081;
+    margin-bottom: 6px;
+  }
+  .summary-card .value {
+    font-size: 20px;
+    font-weight: 800;
+    color: #1a1a1a;
+  }
+  .summary-card .sub {
+    font-size: 11px;
+    color: #c47f4f;
+    margin-top: 3px;
+    font-weight: 600;
+  }
+  .summary-card .sub.down { color: #6b9080; }
+
+  .emotion-bar-card {
+    background: #f1ece0;
+    border-radius: 16px;
+    padding: 14px 16px;
+    margin-bottom: 16px;
+  }
+  .emotion-bar-title {
+    font-size: 12px;
+    color: #9a9081;
+    margin-bottom: 10px;
+  }
+  .emotion-bars {
+    display: flex;
+    align-items: flex-end;
+    gap: 8px;
+    height: 56px;
+  }
+  .emotion-bar-item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    height: 100%;
+    justify-content: flex-end;
+  }
+  .bar {
+    width: 100%;
+    border-radius: 6px 6px 0 0;
+    background: #dba875;
+  }
+  .emoji-label { font-size: 15px; }
+
+  .review-card {
+    background: #f1ece0;
+    border-radius: 16px;
+    padding: 16px;
+    margin-bottom: 20px;
+  }
+  .review-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  .review-header .title {
+    font-size: 14px;
+    font-weight: 700;
+    color: #1a1a1a;
+  }
+  .edit-btn {
+    font-size: 12px;
+    color: #9a9081;
+    background: #e5dfd0;
+    padding: 5px 12px;
+    border-radius: 20px;
+  }
+  .review-preview {
+    font-size: 14px;
+    line-height: 1.7;
+    color: #4a4536;
+  }
+  .review-preview h3 {
+    font-size: 16px;
+    font-weight: 800;
+    margin-bottom: 6px;
+    color: #1a1a1a;
+  }
+  .review-preview .placeholder {
+    color: #b8ac93;
+  }
+
+  .tabbar {
+    display: flex;
+    justify-content: space-around;
+    padding: 16px 0 14px;
+    border-top: 1px solid #e5dfd0;
+    margin-top: 4px;
+  }
+  .tabbar span {
+    font-size: 14px;
+    color: #b8ac93;
+  }
+  .tabbar span.active { color: #1a1a1a; font-weight: 700; }
+
+  .note {
+    max-width: 390px;
+    margin: 14px auto 0;
+    font-size: 12.5px;
+    color: #8a8371;
+    text-align: center;
+    padding: 0 10px;
+  }
+</style>
+</head>
+<body>
+<div>
+  <div class="phone">
+    <div class="statusbar"><span>9:56</span><span>📶 87%</span></div>
+    <div class="content">
+      <div class="month-title">2026년 8월</div>
+
+      <div class="cal-grid">
+        <div class="cal-day-label">일</div><div class="cal-day-label">월</div><div class="cal-day-label">화</div><div class="cal-day-label">수</div><div class="cal-day-label">목</div><div class="cal-day-label">금</div><div class="cal-day-label">토</div>
+        <div class="cal-cell empty"></div><div class="cal-cell empty"></div><div class="cal-cell empty"></div><div class="cal-cell empty"></div><div class="cal-cell empty"></div><div class="cal-cell empty"></div><div class="cal-cell filled">1</div>
+        <div class="cal-cell filled">2</div><div class="cal-cell filled">3</div><div class="cal-cell filled">4</div><div class="cal-cell filled">5</div><div class="cal-cell filled">6</div><div class="cal-cell today">7</div><div class="cal-cell">8</div>
+        <div class="cal-cell">9</div><div class="cal-cell">10</div><div class="cal-cell">11</div><div class="cal-cell">12</div><div class="cal-cell">13</div><div class="cal-cell">14</div><div class="cal-cell">15</div>
+      </div>
+
+      <!-- ===== 여기부터 신규: 월간 평가 섹션 ===== -->
+      <div class="section-divider">
+        <div class="section-label">8월 요약</div>
+
+        <div class="summary-row">
+          <div class="summary-card">
+            <div class="label">이번 달 지출</div>
+            <div class="value">842,000원</div>
+            <div class="sub">▲ 지난달보다 6%</div>
+          </div>
+          <div class="summary-card">
+            <div class="label">가장 많은 지출</div>
+            <div class="value">식비</div>
+            <div class="sub down">312,000원</div>
+          </div>
+        </div>
+
+        <div class="emotion-bar-card">
+          <div class="emotion-bar-title">이번 달 감정 분포 (7일 기록됨)</div>
+          <div class="emotion-bars">
+            <div class="emotion-bar-item">
+              <div class="bar" style="height:14%; background:#c9c2b4;"></div>
+              <div class="emoji-label">😔</div>
+            </div>
+            <div class="emotion-bar-item">
+              <div class="bar" style="height:14%; background:#c9c2b4;"></div>
+              <div class="emoji-label">😐</div>
+            </div>
+            <div class="emotion-bar-item">
+              <div class="bar" style="height:28%; background:#e0c9a6;"></div>
+              <div class="emoji-label">🙂</div>
+            </div>
+            <div class="emotion-bar-item">
+              <div class="bar" style="height:71%;"></div>
+              <div class="emoji-label">😊</div>
+            </div>
+            <div class="emotion-bar-item">
+              <div class="bar" style="height:43%; background:#e0c9a6;"></div>
+              <div class="emoji-label">😄</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="review-card">
+          <div class="review-header">
+            <span class="title">이번 달 회고</span>
+            <span class="edit-btn">편집</span>
+          </div>
+          <div class="review-preview">
+            <h3>사이드 프로젝트 첫 배포</h3>
+            <p>이번 달은 일기장 앱을 처음부터 끝까지 만들어본 달이었다. PWA 설정, Supabase 연동까지 끝냈고...</p>
+          </div>
+        </div>
+
+        <!-- 데이터 없을 때 예시 -->
+        <div class="review-card" style="opacity:0.6;">
+          <div class="review-header">
+            <span class="title">9월 회고</span>
+            <span class="edit-btn">추가</span>
+          </div>
+          <div class="review-preview">
+            <p class="placeholder">아직 작성하지 않았어요. 월이 끝나지 않아도 언제든 적을 수 있어요.</p>
+          </div>
+        </div>
+      </div>
+      <!-- ===== 신규 섹션 끝 ===== -->
+
+      <div class="tabbar">
+        <span>오늘</span>
+        <span class="active">캘린더</span>
+        <span>더보기</span>
+      </div>
+    </div>
+  </div>
+  <div class="note">
+    ※ 위쪽(캘린더)은 기존 화면 그대로, 아래 "8월 요약"부터가 이번에 논의한 신규 섹션입니다.<br>
+    지출 요약 · 감정 분포 · 마크다운 회고(요약 미리보기 + 편집 버튼) 3단 구성입니다.
+  </div>
+</div>
+</body>
+</html>

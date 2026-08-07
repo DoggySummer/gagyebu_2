@@ -51,6 +51,48 @@ export type Database = {
         }
         Relationships: []
       }
+      inbody_records: {
+        Row: {
+          id: string
+          user_id: string
+          measured_at: string
+          weight: number
+          skeletal_muscle_mass: number | null
+          body_fat_mass: number | null
+          body_fat_percentage: number | null
+          waist_hip_ratio: number | null
+          visceral_fat_level: number | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          measured_at: string
+          weight: number
+          skeletal_muscle_mass?: number | null
+          body_fat_mass?: number | null
+          body_fat_percentage?: number | null
+          waist_hip_ratio?: number | null
+          visceral_fat_level?: number | null
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          measured_at?: string
+          weight?: number
+          skeletal_muscle_mass?: number | null
+          body_fat_mass?: number | null
+          body_fat_percentage?: number | null
+          waist_hip_ratio?: number | null
+          visceral_fat_level?: number | null
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       expenses: {
         Row: {
           id: string

@@ -9,16 +9,16 @@ interface Loaded {
 
 const EMPTY: MonthSummary = { totals: {}, favorites: new Set(), max: 0 }
 
-export function useMonthSummary(userId: string, year: number, month: number) {
+export function useMonthSummary(year: number, month: number) {
   const [loaded, setLoaded] = useState<Loaded | null>(null)
   const [reloadToken, setReloadToken] = useState(0)
 
-  const key = `${userId}:${year}-${month}`
+  const key = `${year}-${month}`
 
   useEffect(() => {
     let cancelled = false
 
-    fetchMonthSummary(userId, year, month)
+    fetchMonthSummary(year, month)
       .then((summary) => {
         if (!cancelled) setLoaded({ key, summary, error: null })
       })
@@ -35,7 +35,7 @@ export function useMonthSummary(userId: string, year: number, month: number) {
     return () => {
       cancelled = true
     }
-  }, [userId, year, month, key, reloadToken])
+  }, [year, month, key, reloadToken])
 
   // 월이 바뀌면 아직 이전 달 데이터를 들고 있으므로 로딩으로 취급한다.
   const current = loaded?.key === key ? loaded : null
