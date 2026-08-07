@@ -1,0 +1,11 @@
+{
+  "name": "내 일기장",
+  "short_name": "일기장",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#000000",
+  "orientation": "portrait",
+  "icons": []
+}
