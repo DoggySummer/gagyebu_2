@@ -66,6 +66,41 @@ export interface CalendarSummaryDto {
   maxTotal: number
 }
 
+export interface CategoryTotalDto {
+  category: string
+  amount: number
+}
+
+export interface MoodCountDto {
+  score: number
+  count: number
+}
+
+/** PUT /api/reviews/:month (month = YYYY-MM) */
+export interface UpdateReviewRequest {
+  noteMarkdown: string | null
+}
+
+export interface MonthlyReviewDto {
+  /** YYYY-MM */
+  month: string
+  noteMarkdown: string | null
+}
+
+/** GET /api/calendar/overview?year=&month= — 캘린더 하단 월간 평가 섹션 전용 */
+export interface MonthOverviewDto {
+  year: number
+  month: number
+  totalAmount: number
+  /** 전월 데이터가 아예 없으면 null (증감률을 계산할 기준이 없음) */
+  previousMonthAmount: number | null
+  topCategory: CategoryTotalDto | null
+  moodCounts: MoodCountDto[]
+  /** moodCounts 의 총합. 감정 분포 섹션의 "N일 기록됨" 표시에 쓴다 */
+  recordedMoodDays: number
+  review: MonthlyReviewDto | null
+}
+
 export interface InbodyRecordDto {
   id: string
   measuredAt: string

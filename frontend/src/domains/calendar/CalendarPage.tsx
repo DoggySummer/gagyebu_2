@@ -1,7 +1,9 @@
 import { useRef } from 'react'
 import { Link, Navigate, useNavigate, useParams } from 'react-router'
 import { MonthCalendar } from '@/domains/calendar/MonthCalendar'
+import { MonthOverview } from '@/domains/calendar/MonthOverview'
 import { shiftMonth } from '@/domains/calendar/monthGrid'
+import { useMonthOverview } from '@/domains/calendar/useMonthOverview'
 import { useMonthSummary } from '@/domains/calendar/useMonthSummary'
 import { isValidYearMonth, todayKey } from '@/lib/date'
 
@@ -26,6 +28,7 @@ export function CalendarPage() {
 function CalendarScreen({ year, month }: { year: number; month: number }) {
   const navigate = useNavigate()
   const { summary, isLoading, loadError, reload } = useMonthSummary(year, month)
+  const overview = useMonthOverview(year, month)
   const touchStartX = useRef<number | null>(null)
 
   const previous = shiftMonth(year, month, -1)
@@ -91,6 +94,25 @@ function CalendarScreen({ year, month }: { year: number; month: number }) {
         >
           <MonthCalendar year={year} month={month} summary={summary} today={todayKey()} />
         </div>
+      )}
+
+      {overview.loadError ? (
+        <div className="mt-8 text-center">
+          <p role="alert" className="text-content text-body">
+            {overview.loadError}
+          </p>
+          <button
+            type="button"
+            onClick={overview.reload}
+            className="mt-3 min-h-[44px] rounded-card border border-hairline bg-surface px-4 text-field font-semibold text-body"
+          >
+            다시 시도
+          </button>
+        </div>
+      ) : (
+        overview.overview && (
+          <MonthOverview overview={overview.overview} onReviewSaved={overview.applyReview} />
+        )
       )}
     </main>
   )

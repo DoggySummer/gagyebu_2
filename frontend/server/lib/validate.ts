@@ -1,5 +1,10 @@
 import { HTTPException } from 'hono/http-exception'
-import type { ExpenseRequest, InbodyRequest, PaymentMethod } from '../../shared/api.types.js'
+import type {
+  ExpenseRequest,
+  InbodyRequest,
+  PaymentMethod,
+  UpdateReviewRequest,
+} from '../../shared/api.types.js'
 
 // 프론트 검증은 사용자 편의용일 뿐이므로 서버에서 다시 확인한다.
 const CATEGORIES = ['식비', '외식비', '꾸밈비', '문화생활', '구독료', '건강']
@@ -158,4 +163,28 @@ export function parseYearMonth(year: string | undefined, month: string | undefin
   }
 
   return { year: Number(year), month: Number(month) }
+}
+
+/** 'YYYY-MM' 형식의 두 자리 월만 받는다. */
+export function assertMonthKey(value: string | undefined): string {
+  if (!value || !/^\d{4}-(0[1-9]|1[0-2])$/.test(value)) {
+    badRequest('연월 형식이 올바르지 않아요.')
+  }
+
+  return value
+}
+
+export function parseReviewRequest(body: unknown): UpdateReviewRequest {
+  const record = asRecord(body)
+  const noteMarkdown = record.noteMarkdown
+
+  if (noteMarkdown !== null && noteMarkdown !== undefined && typeof noteMarkdown !== 'string') {
+    badRequest('회고 형식이 올바르지 않아요.')
+  }
+
+  if (typeof noteMarkdown === 'string' && noteMarkdown.length > 10_000) {
+    badRequest('회고는 10,000자까지 입력할 수 있어요.')
+  }
+
+  return { noteMarkdown: (noteMarkdown as string | null | undefined) ?? null }
 }

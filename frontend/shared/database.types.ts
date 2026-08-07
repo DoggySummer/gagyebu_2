@@ -51,6 +51,33 @@ export type Database = {
         }
         Relationships: []
       }
+      monthly_reviews: {
+        Row: {
+          id: string
+          user_id: string
+          month: string
+          note_markdown: string | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          month: string
+          note_markdown?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          month?: string
+          note_markdown?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       inbody_records: {
         Row: {
           id: string
