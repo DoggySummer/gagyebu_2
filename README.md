@@ -55,7 +55,7 @@ Vercel 프로젝트의 Root Directory는 `frontend/`. Vercel이 그 아래 `api/
 ```
 frontend/
   api/
-    [[...route]].ts     ← Vercel 진입점. handle(app)만 export
+    [...route].ts       ← Vercel 진입점. handle(app)만 export
   server/
     app.ts              ← Hono 앱 조립 (basePath('/api'))
     domains/{도메인}/    ← 라우트 · 서비스
@@ -69,7 +69,7 @@ frontend/
 docs/                   ← 설계 문서
 ```
 
-- **라우트를 파일로 쪼개지 않고 catch-all(`[[...route]].ts`) 하나로 받는다.** `api/index.ts`만 두면 `/api` 외의 하위 경로가 404가 되고, 라우트마다 파일을 만들면 Hobby 플랜 함수 개수 제한(12개)을 소모하며 콜드 스타트도 함수별로 각각 발생함. 함수는 1개로 두고 경로 분기는 Hono가 담당
+- **라우트를 파일로 쪼개지 않고 catch-all(`[...route].ts`) 하나로 받는다.** `api/index.ts`만 두면 `/api` 외의 하위 경로가 404가 되고, 라우트마다 파일을 만들면 Hobby 플랜 함수 개수 제한(12개)을 소모하며 콜드 스타트도 함수별로 각각 발생함. 함수는 1개로 두고 경로 분기는 Hono가 담당. **대괄호는 1개**(`[...route].ts`)여야 한다 — `[[...route]].ts`(옵셔널 catch-all, 대괄호 2개)는 Next.js 전용 문법이라 Vercel의 일반 파일시스템 함수 라우팅에서는 세그먼트 1개짜리 경로만 매칭되고 그 이상은 플랫폼 자체 404로 떨어진다 (2026-08-07 발견)
 - **서버 코드는 `src/` 밖에 둔다.** `src/`는 Vite의 클라이언트 번들 대상이라, import 한 줄만 잘못 걸려도 서버 전용 키를 쓰는 코드가 브라우저 번들에 포함될 수 있음. 타입 검사도 `tsconfig.app.json`(DOM) / `tsconfig.server.json`(Node)으로 분리
 - 함수는 무상태로 동작하므로 인메모리 캐시·크론·웹소켓은 사용 불가. MVP 범위에는 해당 사항 없음
 
