@@ -55,7 +55,8 @@ Vercel 프로젝트의 Root Directory는 `frontend/`. Vercel이 그 아래 `api/
 ```
 frontend/
   api/
-    [...route].ts       ← Vercel 진입점. handle(app)만 export
+    handler.ts           ← Vercel 진입점. handle(app)만 export
+  vercel.json             ← rewrites로 /api/:path* 를 전부 api/handler로 보냄
   server/
     app.ts              ← Hono 앱 조립 (basePath('/api'))
     domains/{도메인}/    ← 라우트 · 서비스
@@ -69,7 +70,8 @@ frontend/
 docs/                   ← 설계 문서
 ```
 
-- **라우트를 파일로 쪼개지 않고 catch-all(`[...route].ts`) 하나로 받는다.** `api/index.ts`만 두면 `/api` 외의 하위 경로가 404가 되고, 라우트마다 파일을 만들면 Hobby 플랜 함수 개수 제한(12개)을 소모하며 콜드 스타트도 함수별로 각각 발생함. 함수는 1개로 두고 경로 분기는 Hono가 담당. **대괄호는 1개**(`[...route].ts`)여야 한다 — `[[...route]].ts`(옵셔널 catch-all, 대괄호 2개)는 Next.js 전용 문법이라 Vercel의 일반 파일시스템 함수 라우팅에서는 세그먼트 1개짜리 경로만 매칭되고 그 이상은 플랫폼 자체 404로 떨어진다 (2026-08-07 발견)
+- **라우트를 파일로 쪼개지 않고 함수 하나(`api/handler.ts`)로 받는다.** 라우트마다 파일을 만들면 Hobby 플랜 함수 개수 제한(12개)을 소모하며 콜드 스타트도 함수별로 각각 발생함. 함수는 1개로 두고 경로 분기는 Hono가 담당한다.
+- **파일명에 대괄호 catch-all 문법(`[...route].ts`, `[[...route]].ts`)을 쓰지 않는다.** 둘 다 시도했지만 Vercel의 일반(비-Next.js) 파일시스템 함수 라우팅에서 세그먼트 2개 이상인 경로(`/api/entries/:date` 등)가 플랫폼 자체 404(함수까지 요청이 닿지 않음)로 떨어졌다. 대신 `api/handler.ts`는 평범한 이름으로 두고, `vercel.json`의 `rewrites`(`/api/:path*` → `/api/handler`)가 모든 API 요청을 명시적으로 이 함수로 보낸다. Vercel이 "여러 API 경로 → 함수 하나" 구성에 공식적으로 권장하는 방식이라 브래킷 파일명 규칙보다 안정적이다 (2026-08-07 발견)
 - **서버 코드는 `src/` 밖에 둔다.** `src/`는 Vite의 클라이언트 번들 대상이라, import 한 줄만 잘못 걸려도 서버 전용 키를 쓰는 코드가 브라우저 번들에 포함될 수 있음. 타입 검사도 `tsconfig.app.json`(DOM) / `tsconfig.server.json`(Node)으로 분리
 - 함수는 무상태로 동작하므로 인메모리 캐시·크론·웹소켓은 사용 불가. MVP 범위에는 해당 사항 없음
 

@@ -58,7 +58,7 @@ Vercel 프로젝트의 Root Directory는 `frontend/`. UI와 API가 한 프로젝
 
 ```
 frontend/
-  api/[...route].ts     ← Vercel 진입점. handle(app)만 export, 로직 금지
+  api/handler.ts        ← Vercel 진입점. handle(app)만 export, 로직 금지. vercel.json의 rewrites(/api/:path*)가 모든 API 요청을 여기로 보낸다
   server/               ← Hono 앱 (서버 전용 코드는 전부 여기)
     app.ts
     domains/{도메인}/

@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "typecheck:api": "tsc --noEmit --ignoreConfig --module nodenext --moduleResolution nodenext --target es2023 --skipLibCheck \"api/[...route].ts\"",
+    "typecheck:api": "tsc --noEmit --ignoreConfig --module nodenext --moduleResolution nodenext --target es2023 --skipLibCheck \"api/handler.ts\"",
     "preview": "vite preview"
   },
   "dependencies": {
