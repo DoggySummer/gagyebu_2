@@ -1,19 +1,12 @@
 import { useState } from 'react'
 import { Markdown } from '@/components/ui/Markdown'
 import { MarkdownTextarea } from '@/components/ui/MarkdownEditor'
+import { MOODS, moodEmoji } from '@/lib/moods'
 import type { DailyEntryDto, UpdateEntryRequest } from '@shared/api.types'
 
 type EntryDraft = { moodScore: number | null; gratitude: string; noteMarkdown: string }
 
 type Mode = 'view' | 'edit'
-
-const MOODS = [
-  { score: 1, emoji: '😔' },
-  { score: 2, emoji: '😐' },
-  { score: 3, emoji: '🙂' },
-  { score: 4, emoji: '😊' },
-  { score: 5, emoji: '😄' },
-]
 
 function toDraft(entry: DailyEntryDto | null): EntryDraft {
   return {
@@ -108,14 +101,14 @@ export function NoteTab({ entry, onSave }: Props) {
 }
 
 function ViewMode({ draft, onEdit }: { draft: EntryDraft; onEdit: () => void }) {
-  const mood = MOODS.find((item) => item.score === draft.moodScore)
+  const emoji = moodEmoji(draft.moodScore)
 
   return (
     <div>
       <section className="mt-5">
         <h2 className="text-label font-semibold uppercase tracking-label text-muted">기분</h2>
         <p className="mt-2 text-[28px] leading-none">
-          {mood ? mood.emoji : <span className="text-content text-placeholder">기록하지 않음</span>}
+          {emoji ?? <span className="text-content text-placeholder">기록하지 않음</span>}
         </p>
       </section>
 

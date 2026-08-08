@@ -101,6 +101,20 @@ export interface MonthOverviewDto {
   review: MonthlyReviewDto | null
 }
 
+export interface FavoriteItemDto {
+  entryDate: string
+  moodScore: number | null
+  /** 오늘의 기록(본문) 첫 줄 우선, 없으면 감사한 일. 마크다운 기호는 지운 평문. 없으면 null */
+  preview: string | null
+}
+
+/** GET /api/favorites?cursor= */
+export interface FavoritesResponse {
+  items: FavoriteItemDto[]
+  /** 다음 페이지 요청에 그대로 넘길 값. 더 없으면 null */
+  nextCursor: string | null
+}
+
 export interface InbodyRecordDto {
   id: string
   measuredAt: string
