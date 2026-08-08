@@ -120,6 +120,77 @@ export type Database = {
         }
         Relationships: []
       }
+      work_screens: {
+        Row: {
+          id: string
+          user_id: string
+          title: string
+          summary: string | null
+          unknown_terms: string | null
+          edge_cases: string | null
+          deadline: string | null
+          /** generated column. coalesce(deadline, 'infinity') — 커서 페이지네이션 전용, 화면에 노출하지 않는다 */
+          sort_key: string
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          title: string
+          summary?: string | null
+          unknown_terms?: string | null
+          edge_cases?: string | null
+          deadline?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          title?: string
+          summary?: string | null
+          unknown_terms?: string | null
+          edge_cases?: string | null
+          deadline?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      work_flows: {
+        Row: {
+          id: string
+          user_id: string
+          screen_id: string
+          sort_order: number
+          description: string
+          is_done: boolean
+          done_at: string | null
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          screen_id: string
+          sort_order: number
+          description: string
+          is_done?: boolean
+          done_at?: string | null
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          screen_id?: string
+          sort_order?: number
+          description?: string
+          is_done?: boolean
+          done_at?: string | null
+          created_at?: string
+        }
+        Relationships: []
+      }
       expenses: {
         Row: {
           id: string

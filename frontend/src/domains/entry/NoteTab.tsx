@@ -197,6 +197,7 @@ function EditMode({ draft, onChange }: EditModeProps) {
           maxLength={200}
           onChange={(event) => onChange((prev) => ({ ...prev, gratitude: event.target.value }))}
           placeholder="오늘 고마웠던 일 한 줄"
+          autoComplete="off"
           className="mt-2 min-h-[44px] w-full rounded-card border border-hairline bg-surface px-3 text-field text-body placeholder:text-placeholder"
         />
       </section>

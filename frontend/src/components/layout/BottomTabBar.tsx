@@ -8,7 +8,7 @@ interface Tab {
   isActive: (pathname: string) => boolean
 }
 
-const MORE_PATHS = ['/more', '/favorites', '/stats', '/settings']
+const MORE_PATHS = ['/more', '/calendar', '/favorites', '/stats', '/settings']
 
 function buildTabs(today: string): Tab[] {
   return [
@@ -19,10 +19,10 @@ function buildTabs(today: string): Tab[] {
       isActive: (pathname) => pathname === '/' || pathname.startsWith('/entries'),
     },
     {
-      key: 'calendar',
-      label: '캘린더',
-      to: `/calendar/${today.slice(0, 4)}/${today.slice(5, 7)}`,
-      isActive: (pathname) => pathname.startsWith('/calendar'),
+      key: 'work',
+      label: '작업',
+      to: '/work',
+      isActive: (pathname) => pathname.startsWith('/work'),
     },
     {
       key: 'more',

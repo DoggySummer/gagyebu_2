@@ -137,6 +137,58 @@ export interface InbodyRequest {
   visceralFatLevel: number | null
 }
 
+export interface WorkFlowDto {
+  id: string
+  sortOrder: number
+  description: string
+  isDone: boolean
+  doneAt: string | null
+}
+
+export interface WorkScreenSummaryDto {
+  id: string
+  title: string
+  summary: string | null
+  deadline: string | null
+  totalFlows: number
+  doneFlows: number
+}
+
+export interface WorkScreenDetailDto extends WorkScreenSummaryDto {
+  unknownTerms: string | null
+  edgeCases: string | null
+  createdAt: string
+  updatedAt: string
+  flows: WorkFlowDto[]
+}
+
+/** GET /api/work/screens?cursor= */
+export interface WorkScreensResponse {
+  items: WorkScreenSummaryDto[]
+  nextCursor: string | null
+}
+
+/** 입력 화면의 흐름 한 줄. id가 있으면 기존 흐름 수정(완료 상태 보존), 없으면 새로 생성 */
+export interface WorkFlowInput {
+  id?: string
+  description: string
+}
+
+/** POST /api/work/screens, PUT /api/work/screens/:id */
+export interface WorkScreenRequest {
+  title: string
+  summary: string | null
+  unknownTerms: string | null
+  edgeCases: string | null
+  deadline: string | null
+  flows: WorkFlowInput[]
+}
+
+/** PATCH /api/work/flows/:id */
+export interface UpdateWorkFlowRequest {
+  isDone: boolean
+}
+
 /** 모든 4xx·5xx 응답의 본문 형태 */
 export interface ApiErrorBody {
   error: {

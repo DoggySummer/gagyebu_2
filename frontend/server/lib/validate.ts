@@ -4,6 +4,8 @@ import type {
   InbodyRequest,
   PaymentMethod,
   UpdateReviewRequest,
+  WorkFlowInput,
+  WorkScreenRequest,
 } from '../../shared/api.types.js'
 
 // 프론트 검증은 사용자 편의용일 뿐이므로 서버에서 다시 확인한다.
@@ -172,6 +174,87 @@ export function assertMonthKey(value: string | undefined): string {
   }
 
   return value
+}
+
+function optionalText(value: unknown, label: string, maxLength: number): string | null {
+  if (value === null || value === undefined) return null
+  if (typeof value !== 'string') badRequest(`${label} 형식이 올바르지 않아요.`)
+  if (value.length > maxLength) badRequest(`${label}은 ${maxLength}자까지 입력할 수 있어요.`)
+
+  return value.trim() || null
+}
+
+function optionalDateKey(value: unknown, label: string): string | null {
+  if (value === null || value === undefined) return null
+  if (typeof value !== 'string') badRequest(`${label} 형식이 올바르지 않아요.`)
+
+  return assertDateKey(value, label)
+}
+
+function parseWorkFlowInputs(value: unknown): WorkFlowInput[] {
+  if (!Array.isArray(value)) badRequest('흐름 목록 형식이 올바르지 않아요.')
+
+  return value.map((item, index) => {
+    if (typeof item !== 'object' || item === null) badRequest(`흐름 ${index + 1}번의 형식이 올바르지 않아요.`)
+
+    const { id, description } = item as Record<string, unknown>
+
+    if (typeof description !== 'string' || description.trim().length < 1 || description.trim().length > 300) {
+      badRequest(`흐름 ${index + 1}번은 1자 이상 300자 이하로 입력해주세요.`)
+    }
+
+    if (id !== undefined && typeof id !== 'string') {
+      badRequest(`흐름 ${index + 1}번의 id 형식이 올바르지 않아요.`)
+    }
+
+    return { id: id as string | undefined, description: description.trim() }
+  })
+}
+
+export function parseWorkScreenRequest(body: unknown): WorkScreenRequest {
+  const record = asRecord(body)
+  const { title } = record
+
+  if (typeof title !== 'string' || title.trim().length < 1 || title.trim().length > 100) {
+    badRequest('화면 제목은 1자 이상 100자 이하로 입력해주세요.')
+  }
+
+  return {
+    title: title.trim(),
+    summary: optionalText(record.summary, '요약', 500),
+    unknownTerms: optionalText(record.unknownTerms, '모르는 용어', 2000),
+    edgeCases: optionalText(record.edgeCases, '예외 케이스', 2000),
+    deadline: optionalDateKey(record.deadline, '마감 기한'),
+    flows: parseWorkFlowInputs(record.flows ?? []),
+  }
+}
+
+export function parseWorkFlowToggle(body: unknown): boolean {
+  const record = asRecord(body)
+
+  if (typeof record.isDone !== 'boolean') {
+    badRequest('완료 여부 값이 올바르지 않아요.')
+  }
+
+  return record.isDone
+}
+
+export interface WorkScreensCursor {
+  sortKey: string
+  id: string
+}
+
+/** "<sort_key>|<id>" 형태. sort_key가 NOT NULL(coalesce(deadline, 'infinity'))이라 항상 두 부분이 있다. */
+export function parseWorkScreensCursor(raw: string | undefined): WorkScreensCursor | null {
+  if (!raw) return null
+
+  const separatorIndex = raw.indexOf('|')
+
+  if (separatorIndex < 0) {
+    badRequest('커서 형식이 올바르지 않아요.')
+  }
+
+  return { sortKey: raw.slice(0, separatorIndex), id: raw.slice(separatorIndex + 1) }
 }
 
 export function parseReviewRequest(body: unknown): UpdateReviewRequest {

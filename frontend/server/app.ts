@@ -8,6 +8,7 @@ import expenseRoute from './domains/expense/route.js'
 import favoriteRoute from './domains/favorite/route.js'
 import inbodyRoute from './domains/inbody/route.js'
 import reviewRoute from './domains/review/route.js'
+import workRoute from './domains/work/route.js'
 
 /**
  * Hono 앱 본체. Vercel 진입점(api/handler.ts)에서 이 앱을 그대로 넘겨받는다.
@@ -22,6 +23,7 @@ app.route('/expenses', expenseRoute)
 app.route('/calendar', calendarRoute)
 app.route('/inbody', inbodyRoute)
 app.route('/favorites', favoriteRoute)
+app.route('/work', workRoute)
 app.route('/reviews', reviewRoute)
 
 // 모든 실패 응답을 { error: { code, message } } 한 형태로 통일한다.

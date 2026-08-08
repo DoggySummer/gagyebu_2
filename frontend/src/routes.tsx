@@ -12,6 +12,9 @@ import { InbodyPage } from '@/domains/inbody/InbodyPage'
 import { MorePage } from '@/domains/more/MorePage'
 import { SettingsPage } from '@/domains/settings/SettingsPage'
 import { StatsPage } from '@/domains/stats/StatsPage'
+import { WorkDetailPage } from '@/domains/work/WorkDetailPage'
+import { WorkFormPage } from '@/domains/work/WorkFormPage'
+import { WorkListPage } from '@/domains/work/WorkListPage'
 
 export const routes: RouteObject[] = [
   { path: '/login', element: <LoginPage /> },
@@ -25,6 +28,8 @@ export const routes: RouteObject[] = [
           { path: '/entries/:date', element: <EntryPage /> },
           { path: '/calendar', element: <CurrentMonthRedirect /> },
           { path: '/calendar/:year/:month', element: <CalendarPage /> },
+          { path: '/work', element: <WorkListPage /> },
+          { path: '/work/:id', element: <WorkDetailPage /> },
           { path: '/more', element: <MorePage /> },
           { path: '/favorites', element: <FavoritesPage /> },
           { path: '/stats', element: <StatsPage /> },
@@ -34,6 +39,8 @@ export const routes: RouteObject[] = [
       },
       // 입력 화면은 목업대로 탭바 없이 단독으로 띄운다.
       { path: '/stats/inbody/new', element: <InbodyFormPage /> },
+      { path: '/work/new', element: <WorkFormPage /> },
+      { path: '/work/:id/edit', element: <WorkFormPage /> },
     ],
   },
   { path: '*', element: <NotFoundPage /> },
