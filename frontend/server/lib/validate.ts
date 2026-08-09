@@ -1,5 +1,6 @@
 import { HTTPException } from 'hono/http-exception'
 import type {
+  AccountRequest,
   ExpenseRequest,
   InbodyRequest,
   PaymentMethod,
@@ -7,6 +8,7 @@ import type {
   WorkFlowInput,
   WorkScreenRequest,
 } from '../../shared/api.types.js'
+import { isAccountCategory } from './assetCategories.js'
 
 // 프론트 검증은 사용자 편의용일 뿐이므로 서버에서 다시 확인한다.
 const CATEGORIES = ['식비', '외식비', '꾸밈비', '문화생활', '구독료', '건강']
@@ -270,4 +272,41 @@ export function parseReviewRequest(body: unknown): UpdateReviewRequest {
   }
 
   return { noteMarkdown: (noteMarkdown as string | null | undefined) ?? null }
+}
+
+export function parseAccountRequest(body: unknown): AccountRequest {
+  const record = asRecord(body)
+  const { name, institution, category, balance } = record
+
+  if (typeof name !== 'string' || name.trim().length < 1 || name.trim().length > 100) {
+    badRequest('이름은 1자 이상 100자 이하로 입력해주세요.')
+  }
+
+  if (
+    institution !== null &&
+    institution !== undefined &&
+    (typeof institution !== 'string' || institution.length > 100)
+  ) {
+    badRequest('기관명은 100자까지 입력할 수 있어요.')
+  }
+
+  if (typeof category !== 'string' || !isAccountCategory(category)) {
+    badRequest('카테고리가 올바르지 않아요.')
+  }
+
+  if (
+    typeof balance !== 'number' ||
+    !Number.isInteger(balance) ||
+    balance < 0 ||
+    balance > 10_000_000_000
+  ) {
+    badRequest('금액은 0원 이상 100억원 이하의 정수여야 해요.')
+  }
+
+  return {
+    name: name.trim(),
+    institution: typeof institution === 'string' ? institution.trim() || null : null,
+    category,
+    balance,
+  }
 }
