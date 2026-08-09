@@ -227,6 +227,72 @@ export type Database = {
         }
         Relationships: []
       }
+      accounts: {
+        Row: {
+          id: string
+          user_id: string
+          name: string
+          institution: string | null
+          category: string
+          balance: number
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          name: string
+          institution?: string | null
+          category: string
+          balance?: number
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          name?: string
+          institution?: string | null
+          category?: string
+          balance?: number
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      net_worth_snapshots: {
+        Row: {
+          id: string
+          user_id: string
+          month: string
+          asset_total: number
+          liability_total: number
+          net_worth: number
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          month: string
+          asset_total?: number
+          liability_total?: number
+          net_worth?: number
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          month?: string
+          asset_total?: number
+          liability_total?: number
+          net_worth?: number
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: { [_ in never]: never }
     Functions: { [_ in never]: never }
