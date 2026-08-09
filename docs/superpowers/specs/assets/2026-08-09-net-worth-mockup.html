@@ -1,0 +1,414 @@
+<title>자산 페이지 목업 — gagyebu_2</title>
+<style>
+  :root {
+    --color-canvas: #fdfbf7;
+    --color-surface: #fffdfa;
+    --color-hairline: #ece6dc;
+    --color-divider: #f2eee6;
+
+    --color-ink: #2b2a26;
+    --color-body: #48453e;
+    --color-muted: #aba391;
+    --color-placeholder: #c4bca9;
+
+    --color-chip: #f5f1ea;
+    --color-chip-fg: #8a8271;
+
+    --color-cat-health-bg: #ddebe0;
+    --color-cat-health-fg: #4a7c5e;
+    --color-cat-food-bg: #fbe3d6;
+    --color-cat-food-fg: #b0664a;
+
+    --radius-card: 10px;
+    --radius-cell: 8px;
+
+    --text-date: 22px;
+    --text-label: 11px;
+    --text-content: 15px;
+    --text-amount: 32px;
+    --text-field: 16px;
+
+    --tracking-title: -0.01em;
+    --tracking-label: 0.14em;
+
+    --font-sans: -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    font-family: var(--font-sans);
+    background: #efe9db;
+    color: var(--color-body);
+    display: flex;
+    justify-content: center;
+    padding: 32px 16px 64px;
+  }
+
+  .note {
+    position: fixed;
+    top: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 12px;
+    color: #8a8271;
+    background: #fffdfa;
+    border: 1px solid var(--color-hairline);
+    border-radius: 999px;
+    padding: 4px 12px;
+    white-space: nowrap;
+  }
+
+  .phone {
+    width: 375px;
+    max-width: 100%;
+    background: var(--color-canvas);
+    border-radius: 28px;
+    border: 1px solid #e2dbcb;
+    box-shadow: 0 24px 60px -20px rgba(43, 42, 38, 0.35);
+    overflow: hidden;
+    margin-top: 28px;
+  }
+
+  main {
+    padding: 20px 16px 12px;
+    min-height: 620px;
+  }
+
+  h1 {
+    font-size: var(--text-date);
+    line-height: 1.3;
+    font-weight: 700;
+    letter-spacing: var(--tracking-title);
+    color: var(--color-ink);
+    margin: 0;
+  }
+
+  .header-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 8px;
+  }
+
+  .add-chip {
+    flex-shrink: 0;
+    border-radius: 999px;
+    background: var(--color-chip);
+    color: var(--color-chip-fg);
+    font-size: var(--text-label);
+    font-weight: 600;
+    padding: 7px 12px;
+    white-space: nowrap;
+  }
+
+  /* 요약 카드 */
+  .summary-card {
+    margin-top: 14px;
+    border: 1px solid var(--color-hairline);
+    background: var(--color-surface);
+    border-radius: var(--radius-card);
+    padding: 16px;
+  }
+
+  .net-worth-label {
+    font-size: var(--text-label);
+    font-weight: 600;
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--color-muted);
+  }
+
+  .net-worth-amount {
+    margin-top: 4px;
+    font-size: var(--text-amount);
+    line-height: 1.2;
+    font-weight: 700;
+    color: var(--color-ink);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .breakdown-row {
+    margin-top: 12px;
+    display: flex;
+    gap: 8px;
+  }
+
+  .breakdown-item {
+    flex: 1;
+    border-radius: var(--radius-cell);
+    padding: 10px 12px;
+  }
+
+  .breakdown-item.asset { background: var(--color-cat-health-bg); }
+  .breakdown-item.liability { background: var(--color-cat-food-bg); }
+
+  .breakdown-item .label {
+    font-size: var(--text-label);
+    font-weight: 600;
+  }
+  .breakdown-item.asset .label { color: var(--color-cat-health-fg); }
+  .breakdown-item.liability .label { color: var(--color-cat-food-fg); }
+
+  .breakdown-item .value {
+    margin-top: 2px;
+    font-size: var(--text-field);
+    font-weight: 700;
+    color: var(--color-ink);
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* 추이 그래프 */
+  .trend-card {
+    margin-top: 10px;
+    border: 1px solid var(--color-hairline);
+    background: var(--color-surface);
+    border-radius: var(--radius-card);
+    padding: 16px 16px 12px;
+  }
+
+  .section-title {
+    font-size: var(--text-label);
+    font-weight: 600;
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--color-muted);
+  }
+
+  .trend-svg-wrap { margin-top: 10px; }
+
+  .trend-months {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 4px;
+    font-size: 10px;
+    color: var(--color-placeholder);
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* 계좌 목록 */
+  .accounts-section { margin-top: 20px; }
+
+  .group-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin: 18px 2px 6px;
+  }
+
+  .group-header .name {
+    font-size: var(--text-label);
+    font-weight: 600;
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--color-muted);
+  }
+
+  .group-header .subtotal {
+    font-size: var(--text-label);
+    font-weight: 600;
+    color: var(--color-body);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .account-list {
+    border: 1px solid var(--color-hairline);
+    background: var(--color-surface);
+    border-radius: var(--radius-card);
+    overflow: hidden;
+  }
+
+  .account-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 12px 14px;
+    min-height: 44px;
+  }
+
+  .account-row + .account-row {
+    border-top: 1px solid var(--color-divider);
+  }
+
+  .account-row .name-block .name {
+    font-size: var(--text-content);
+    color: var(--color-ink);
+    font-weight: 600;
+  }
+
+  .account-row .name-block .institution {
+    font-size: var(--text-label);
+    color: var(--color-muted);
+    margin-top: 2px;
+  }
+
+  .account-row .amount {
+    font-size: var(--text-content);
+    font-weight: 600;
+    color: var(--color-body);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+
+  .empty-row {
+    padding: 14px;
+    font-size: var(--text-content);
+    color: var(--color-placeholder);
+    text-align: center;
+  }
+
+  /* 하단 탭바 */
+  .tabbar {
+    display: flex;
+    border-top: 1px solid var(--color-hairline);
+    background: var(--color-surface);
+  }
+
+  .tab {
+    flex: 1;
+    text-align: center;
+    padding: 10px 0 14px;
+    font-size: var(--text-label);
+    font-weight: 600;
+    color: var(--color-placeholder);
+  }
+
+  .tab.active { color: var(--color-ink); }
+
+  .tab .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 999px;
+    background: currentColor;
+    margin: 0 auto 6px;
+  }
+</style>
+
+<div class="note">375px 모바일 기준 · 더보기 &gt; 자산 화면 목업</div>
+
+<div class="phone">
+  <main>
+    <div class="header-row">
+      <h1>자산</h1>
+      <button class="add-chip" type="button">+ 계좌 추가</button>
+    </div>
+
+    <section class="summary-card">
+      <div class="net-worth-label">순자산</div>
+      <div class="net-worth-amount">10,116,075원</div>
+
+      <div class="breakdown-row">
+        <div class="breakdown-item asset">
+          <div class="label">자산 총액</div>
+          <div class="value">10,116,075원</div>
+        </div>
+        <div class="breakdown-item liability">
+          <div class="label">부채 총액</div>
+          <div class="value">0원</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="trend-card">
+      <div class="section-title">순자산 추이</div>
+      <div class="trend-svg-wrap">
+        <svg viewBox="0 0 343 96" width="100%" height="96" preserveAspectRatio="none">
+          <polyline
+            points="0,80 57,72 114,66 171,55 228,40 285,24 343,10"
+            fill="none"
+            stroke="#4a7c5e"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+          <circle cx="343" cy="10" r="3.5" fill="#4a7c5e" />
+        </svg>
+      </div>
+      <div class="trend-months">
+        <span>3월</span><span>4월</span><span>5월</span><span>6월</span><span>7월</span><span>8월</span>
+      </div>
+    </section>
+
+    <section class="accounts-section">
+      <div class="group-header">
+        <span class="name">현금성자산</span>
+        <span class="subtotal">6,111,853원</span>
+      </div>
+      <div class="account-list">
+        <div class="account-row">
+          <div class="name-block">
+            <div class="name">생활비 통장</div>
+            <div class="institution">신한은행</div>
+          </div>
+          <div class="amount">309,748원</div>
+        </div>
+        <div class="account-row">
+          <div class="name-block">
+            <div class="name">월급 통장</div>
+            <div class="institution">우리은행</div>
+          </div>
+          <div class="amount">0원</div>
+        </div>
+        <div class="account-row">
+          <div class="name-block">
+            <div class="name">청년처음적금</div>
+            <div class="institution">우리은행</div>
+          </div>
+          <div class="amount">1,500,000원</div>
+        </div>
+        <div class="account-row">
+          <div class="name-block">
+            <div class="name">CMA (비상금)</div>
+            <div class="institution">미래에셋증권</div>
+          </div>
+          <div class="amount">4,302,105원</div>
+        </div>
+      </div>
+
+      <div class="group-header">
+        <span class="name">투자자산</span>
+        <span class="subtotal">3,814,556원</span>
+      </div>
+      <div class="account-list">
+        <div class="account-row">
+          <div class="name-block">
+            <div class="name">증권계좌 (TIGER S&amp;P500)</div>
+            <div class="institution">미래에셋증권</div>
+          </div>
+          <div class="amount">1,114,556원</div>
+        </div>
+        <div class="account-row">
+          <div class="name-block">
+            <div class="name">주택청약</div>
+            <div class="institution">우리은행</div>
+          </div>
+          <div class="amount">2,700,000원</div>
+        </div>
+      </div>
+
+      <div class="group-header">
+        <span class="name">은퇴자산</span>
+        <span class="subtotal">0원</span>
+      </div>
+      <div class="account-list">
+        <div class="empty-row">등록된 계좌가 없어요.</div>
+      </div>
+
+      <div class="group-header">
+        <span class="name">부채</span>
+        <span class="subtotal">0원</span>
+      </div>
+      <div class="account-list">
+        <div class="empty-row">등록된 부채가 없어요.</div>
+      </div>
+    </section>
+  </main>
+
+  <nav class="tabbar">
+    <div class="tab"><div class="dot"></div>오늘</div>
+    <div class="tab"><div class="dot"></div>캘린더</div>
+    <div class="tab active"><div class="dot"></div>더보기</div>
+  </nav>
+</div>
