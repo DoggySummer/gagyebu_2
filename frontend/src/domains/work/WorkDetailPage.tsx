@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router'
 import { ConfirmDialog } from '@/components/ui/ConfirmDialog'
 import { ProgressDots } from '@/components/ui/ProgressDots'
-import { deadlineLabel, formatDoneAt } from '@/domains/work/deadline'
+import { formatDoneAt } from '@/domains/work/deadline'
 import { useWorkScreen } from '@/domains/work/useWorkScreen'
 import { WorkStatusBadge } from '@/domains/work/WorkStatusBadge'
 
@@ -85,7 +85,6 @@ function WorkDetailScreen({ id }: { id: string }) {
       <div className="mt-2 flex flex-wrap items-center gap-3">
         <WorkStatusBadge deadline={screen.deadline} isComplete={isComplete} />
         <ProgressDots done={screen.doneFlows} total={screen.totalFlows} />
-        <span className="text-label text-muted">{deadlineLabel(screen.deadline)}</span>
       </div>
 
       {screen.summary && (
