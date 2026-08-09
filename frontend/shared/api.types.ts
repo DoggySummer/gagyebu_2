@@ -189,6 +189,38 @@ export interface UpdateWorkFlowRequest {
   isDone: boolean
 }
 
+export interface AccountDto {
+  id: string
+  name: string
+  institution: string | null
+  category: string
+  balance: number
+}
+
+/** POST /api/assets/accounts, PUT /api/assets/accounts/:id */
+export interface AccountRequest {
+  name: string
+  institution: string | null
+  category: string
+  balance: number
+}
+
+/** GET /api/assets/summary */
+export interface AssetsSummaryDto {
+  accounts: AccountDto[]
+  assetTotal: number
+  liabilityTotal: number
+  netWorth: number
+}
+
+/** GET /api/assets/trend — month 오름차순 */
+export interface NetWorthSnapshotDto {
+  month: string
+  assetTotal: number
+  liabilityTotal: number
+  netWorth: number
+}
+
 /** 모든 4xx·5xx 응답의 본문 형태 */
 export interface ApiErrorBody {
   error: {
