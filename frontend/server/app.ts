@@ -2,6 +2,7 @@ import { Hono } from 'hono'
 import { HTTPException } from 'hono/http-exception'
 import type { ApiErrorBody } from '../shared/api.types.js'
 import { logError } from './env.js'
+import assetsRoute from './domains/assets/route.js'
 import calendarRoute from './domains/calendar/route.js'
 import entryRoute from './domains/entry/route.js'
 import expenseRoute from './domains/expense/route.js'
@@ -20,6 +21,7 @@ app.get('/health', (c) => c.json({ ok: true }))
 
 app.route('/entries', entryRoute)
 app.route('/expenses', expenseRoute)
+app.route('/assets', assetsRoute)
 app.route('/calendar', calendarRoute)
 app.route('/inbody', inbodyRoute)
 app.route('/favorites', favoriteRoute)
