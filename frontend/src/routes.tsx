@@ -4,6 +4,8 @@ import { AppShell } from '@/components/layout/AppShell'
 import { RequireAuth } from '@/components/routing/RequireAuth'
 import { CurrentMonthRedirect, TodayRedirect } from '@/components/routing/Redirects'
 import { LoginPage } from '@/domains/auth/LoginPage'
+import { AccountFormPage } from '@/domains/assets/AccountFormPage'
+import { AssetsPage } from '@/domains/assets/AssetsPage'
 import { CalendarPage } from '@/domains/calendar/CalendarPage'
 import { EntryPage } from '@/domains/entry/EntryPage'
 import { FavoritesPage } from '@/domains/favorite/FavoritesPage'
@@ -30,6 +32,7 @@ export const routes: RouteObject[] = [
           { path: '/calendar/:year/:month', element: <CalendarPage /> },
           { path: '/work', element: <WorkListPage /> },
           { path: '/work/:id', element: <WorkDetailPage /> },
+          { path: '/assets', element: <AssetsPage /> },
           { path: '/more', element: <MorePage /> },
           { path: '/favorites', element: <FavoritesPage /> },
           { path: '/stats', element: <StatsPage /> },
@@ -41,6 +44,8 @@ export const routes: RouteObject[] = [
       { path: '/stats/inbody/new', element: <InbodyFormPage /> },
       { path: '/work/new', element: <WorkFormPage /> },
       { path: '/work/:id/edit', element: <WorkFormPage /> },
+      { path: '/assets/new', element: <AccountFormPage /> },
+      { path: '/assets/:id/edit', element: <AccountFormPage /> },
     ],
   },
   { path: '*', element: <NotFoundPage /> },

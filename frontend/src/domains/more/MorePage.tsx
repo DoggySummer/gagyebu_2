@@ -7,6 +7,7 @@ export function MorePage() {
   const menu = [
     { to: `/calendar/${today.slice(0, 4)}/${today.slice(5, 7)}`, label: '캘린더' },
     { to: '/favorites', label: '즐겨찾기' },
+    { to: '/assets', label: '자산' },
     { to: '/stats', label: '통계' },
     { to: '/settings', label: '설정' },
   ]
