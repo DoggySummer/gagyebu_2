@@ -8,7 +8,7 @@ interface MenuItem {
 }
 
 const MENU: MenuItem[] = [
-  { label: '가계부', description: '준비 중' },
+  { label: '가계부', description: '고정·변동·저축 구성과 카테고리별 지출', to: '/stats/expenses' },
   { label: '인바디', description: '체성분 측정값과 항목별 추이', to: '/stats/inbody' },
 ]
 

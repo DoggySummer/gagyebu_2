@@ -293,6 +293,63 @@ export type Database = {
         }
         Relationships: []
       }
+      monthly_settings: {
+        Row: {
+          id: string
+          user_id: string
+          month: string
+          income: number
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          month: string
+          income?: number
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          month?: string
+          income?: number
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      fixed_expenses: {
+        Row: {
+          id: string
+          user_id: string
+          month: string
+          category: string
+          amount: number
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          month: string
+          category: string
+          amount?: number
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          month?: string
+          category?: string
+          amount?: number
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: { [_ in never]: never }
     Functions: { [_ in never]: never }

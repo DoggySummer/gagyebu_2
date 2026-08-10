@@ -221,6 +221,51 @@ export interface NetWorthSnapshotDto {
   netWorth: number
 }
 
+export interface FixedExpenseDto {
+  category: string
+  amount: number
+}
+
+/** GET /api/budget/:month, PUT /api/budget/:month (month = YYYY-MM) */
+export interface BudgetDto {
+  month: string
+  income: number
+  fixedExpenses: FixedExpenseDto[]
+}
+
+export interface UpdateBudgetRequest {
+  income: number
+  fixedExpenses: FixedExpenseDto[]
+}
+
+export interface CategoryAmountDto {
+  category: string
+  amount: number
+}
+
+export interface MonthlyExpenseTotalDto {
+  /** YYYY-MM */
+  month: string
+  total: number
+}
+
+/** GET /api/stats/expenses?year=&month= — 더보기 > 통계 > 가계부 화면 전용 */
+export interface ExpenseStatsDto {
+  year: number
+  month: number
+  income: number
+  fixedTotal: number
+  fixedExpenses: FixedExpenseDto[]
+  variableTotal: number
+  variableByCategory: CategoryAmountDto[]
+  /** 이번 달 순자산 - 지난 달 순자산. 둘 중 하나라도 스냅샷이 없으면 null */
+  savings: number | null
+  /** savings / income. income이 0이면 null */
+  savingsRate: number | null
+  /** 최근 6개월, 오름차순 */
+  monthlyTrend: MonthlyExpenseTotalDto[]
+}
+
 /** 모든 4xx·5xx 응답의 본문 형태 */
 export interface ApiErrorBody {
   error: {

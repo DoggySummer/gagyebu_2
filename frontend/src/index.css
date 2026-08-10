@@ -47,19 +47,25 @@
   --color-chip: #f5f1ea;
   --color-chip-fg: #8a8271;
 
-  /* 카테고리 */
+  /* 카테고리 (변동지출 7종) */
+  --color-cat-life-bg: #efe9da;
+  --color-cat-life-fg: #8a7a4e;
   --color-cat-food-bg: #fbe3d6;
   --color-cat-food-fg: #b0664a;
   --color-cat-dining-bg: #fcebd0;
   --color-cat-dining-fg: #a87a2f;
+  --color-cat-event-bg: #e6dee6;
+  --color-cat-event-fg: #6f5670;
   --color-cat-beauty-bg: #f7dfe6;
   --color-cat-beauty-fg: #a85273;
   --color-cat-culture-bg: #e4e0f2;
   --color-cat-culture-fg: #5b4e8c;
-  --color-cat-subscription-bg: #dde7f2;
-  --color-cat-subscription-fg: #4a6e96;
   --color-cat-health-bg: #ddebe0;
   --color-cat-health-fg: #4a7c5e;
+
+  /* 구독료 태그(고정지출 목록 전용). 변동지출 칩에는 더 이상 쓰지 않는다 */
+  --color-cat-subscription-bg: #dde7f2;
+  --color-cat-subscription-fg: #4a6e96;
 
   /* 카카오 브랜드 (로그인 버튼 전용. 카카오 가이드라인이 정한 색이라 변경 불가) */
   --color-kakao: #fee500;

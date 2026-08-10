@@ -4,6 +4,7 @@ import type {
   ExpenseRequest,
   InbodyRequest,
   PaymentMethod,
+  UpdateBudgetRequest,
   UpdateReviewRequest,
   WorkFlowInput,
   WorkScreenRequest,
@@ -11,7 +12,9 @@ import type {
 import { isAccountCategory } from './assetCategories.js'
 
 // 프론트 검증은 사용자 편의용일 뿐이므로 서버에서 다시 확인한다.
-const CATEGORIES = ['식비', '외식비', '꾸밈비', '문화생활', '구독료', '건강']
+// 2026-08-09: 실제 가계부 스프레드시트 기준으로 갱신 — 생활비·경조사 추가, 구독료는 고정지출로 이동.
+const CATEGORIES = ['생활비', '식비', '외식비', '경조사', '꾸밈비', '문화생활', '건강']
+const FIXED_CATEGORIES = ['주거비', '교통비', '통신비', '보장성보험', '공부', '구독료']
 const PAYMENT_METHODS: PaymentMethod[] = ['card', 'cash', 'transfer']
 
 export function badRequest(message: string): never {
@@ -309,4 +312,44 @@ export function parseAccountRequest(body: unknown): AccountRequest {
     category,
     balance,
   }
+}
+
+/** 월 설정(수입 + 고정지출 6종)은 두 값을 한 화면에서 같이 저장한다. */
+export function parseBudgetRequest(body: unknown): UpdateBudgetRequest {
+  const record = asRecord(body)
+  const { income, fixedExpenses } = record
+
+  if (typeof income !== 'number' || !Number.isInteger(income) || income < 0 || income > 1_000_000_000) {
+    badRequest('수입은 0원 이상 10억원 이하의 정수여야 해요.')
+  }
+
+  if (!Array.isArray(fixedExpenses)) {
+    badRequest('고정지출 형식이 올바르지 않아요.')
+  }
+
+  const items = fixedExpenses.map((item, index) => {
+    if (typeof item !== 'object' || item === null) {
+      badRequest(`고정지출 ${index + 1}번의 형식이 올바르지 않아요.`)
+    }
+
+    const { category, amount } = item as Record<string, unknown>
+
+    if (typeof category !== 'string' || !FIXED_CATEGORIES.includes(category)) {
+      badRequest(`고정지출 ${index + 1}번의 카테고리가 올바르지 않아요.`)
+    }
+
+    if (typeof amount !== 'number' || !Number.isInteger(amount) || amount < 0 || amount > 100_000_000) {
+      badRequest(`${category}의 금액은 0원 이상 1억원 이하의 정수여야 해요.`)
+    }
+
+    return { category, amount }
+  })
+
+  const seen = new Set(items.map((item) => item.category))
+
+  if (seen.size !== items.length) {
+    badRequest('고정지출 카테고리가 중복됐어요.')
+  }
+
+  return { income, fixedExpenses: items }
 }

@@ -2,10 +2,15 @@ import type { RouteObject } from 'react-router'
 import { NotFoundPage } from '@/components/NotFoundPage'
 import { AppShell } from '@/components/layout/AppShell'
 import { RequireAuth } from '@/components/routing/RequireAuth'
-import { CurrentMonthRedirect, TodayRedirect } from '@/components/routing/Redirects'
+import {
+  CurrentExpenseStatsRedirect,
+  CurrentMonthRedirect,
+  TodayRedirect,
+} from '@/components/routing/Redirects'
 import { LoginPage } from '@/domains/auth/LoginPage'
 import { AccountFormPage } from '@/domains/assets/AccountFormPage'
 import { AssetsPage } from '@/domains/assets/AssetsPage'
+import { BudgetFormPage } from '@/domains/budget/BudgetFormPage'
 import { CalendarPage } from '@/domains/calendar/CalendarPage'
 import { EntryPage } from '@/domains/entry/EntryPage'
 import { FavoritesPage } from '@/domains/favorite/FavoritesPage'
@@ -13,6 +18,7 @@ import { InbodyFormPage } from '@/domains/inbody/InbodyFormPage'
 import { InbodyPage } from '@/domains/inbody/InbodyPage'
 import { MorePage } from '@/domains/more/MorePage'
 import { SettingsPage } from '@/domains/settings/SettingsPage'
+import { ExpenseStatsPage } from '@/domains/stats/ExpenseStatsPage'
 import { StatsPage } from '@/domains/stats/StatsPage'
 import { WorkDetailPage } from '@/domains/work/WorkDetailPage'
 import { WorkFormPage } from '@/domains/work/WorkFormPage'
@@ -37,6 +43,8 @@ export const routes: RouteObject[] = [
           { path: '/favorites', element: <FavoritesPage /> },
           { path: '/stats', element: <StatsPage /> },
           { path: '/stats/inbody', element: <InbodyPage /> },
+          { path: '/stats/expenses', element: <CurrentExpenseStatsRedirect /> },
+          { path: '/stats/expenses/:year/:month', element: <ExpenseStatsPage /> },
           { path: '/settings', element: <SettingsPage /> },
         ],
       },
@@ -46,6 +54,7 @@ export const routes: RouteObject[] = [
       { path: '/work/:id/edit', element: <WorkFormPage /> },
       { path: '/assets/new', element: <AccountFormPage /> },
       { path: '/assets/:id/edit', element: <AccountFormPage /> },
+      { path: '/budget/:month', element: <BudgetFormPage /> },
     ],
   },
   { path: '*', element: <NotFoundPage /> },

@@ -11,3 +11,9 @@ export function CurrentMonthRedirect() {
 
   return <Navigate to={`/calendar/${today.slice(0, 4)}/${today.slice(5, 7)}`} replace />
 }
+
+export function CurrentExpenseStatsRedirect() {
+  const today = todayKey()
+
+  return <Navigate to={`/stats/expenses/${today.slice(0, 4)}/${today.slice(5, 7)}`} replace />
+}

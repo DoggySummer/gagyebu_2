@@ -3,12 +3,14 @@ import { HTTPException } from 'hono/http-exception'
 import type { ApiErrorBody } from '../shared/api.types.js'
 import { logError } from './env.js'
 import assetsRoute from './domains/assets/route.js'
+import budgetRoute from './domains/budget/route.js'
 import calendarRoute from './domains/calendar/route.js'
 import entryRoute from './domains/entry/route.js'
 import expenseRoute from './domains/expense/route.js'
 import favoriteRoute from './domains/favorite/route.js'
 import inbodyRoute from './domains/inbody/route.js'
 import reviewRoute from './domains/review/route.js'
+import statsRoute from './domains/stats/route.js'
 import workRoute from './domains/work/route.js'
 
 /**
@@ -26,6 +28,8 @@ app.route('/calendar', calendarRoute)
 app.route('/inbody', inbodyRoute)
 app.route('/favorites', favoriteRoute)
 app.route('/work', workRoute)
+app.route('/budget', budgetRoute)
+app.route('/stats', statsRoute)
 app.route('/reviews', reviewRoute)
 
 // 모든 실패 응답을 { error: { code, message } } 한 형태로 통일한다.
