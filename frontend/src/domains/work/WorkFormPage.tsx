@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router'
 import { createWorkScreen, fetchWorkScreen, updateWorkScreen } from '@/domains/work/api'
+import { todayKey } from '@/lib/date'
 import type { WorkFlowInput, WorkScreenRequest } from '@shared/api.types'
 
 interface FlowRow {
@@ -234,24 +235,39 @@ export function WorkFormPage() {
 
         <section className="mt-6 border-t border-hairline pt-5">
           <h2 className="text-label font-semibold uppercase tracking-label text-muted">마감 기한</h2>
-          <div className="mt-2 flex items-center gap-2">
-            <input
-              type="date"
-              value={deadline ?? ''}
-              onChange={(event) => setDeadline(event.target.value || null)}
-              className="min-h-[44px] flex-1 rounded-card border border-hairline bg-surface px-3 text-field font-semibold text-ink"
-            />
-            <button
-              type="button"
-              aria-pressed={deadline === null}
-              onClick={() => setDeadline(null)}
-              className={`min-h-[44px] shrink-0 rounded-full px-4 text-field font-semibold ${
-                deadline === null ? 'bg-ink text-canvas' : 'bg-chip text-chip-fg'
-              }`}
-            >
-              없음
-            </button>
-          </div>
+          {/* 빈 값인 네이티브 date input을 "없음" 필과 나란히 좁게 두면 기기별로 렌더링이
+              깨진다(내부 mm/dd/yyyy 세그먼트가 다 접혀 캘린더 아이콘만 남는 경우가 있음).
+              "없음"일 때는 date input 자체를 안 띄우고 버튼으로 대체해 그 상황을 피한다. */}
+          {deadline === null ? (
+            <div className="mt-2 flex items-center gap-2">
+              <button
+                type="button"
+                onClick={() => setDeadline(todayKey())}
+                className="min-h-[44px] flex-1 rounded-card border border-hairline bg-surface px-3 text-left text-field text-placeholder"
+              >
+                날짜 선택
+              </button>
+              <span className="shrink-0 rounded-full bg-ink px-4 py-2.5 text-field font-semibold text-canvas">
+                없음
+              </span>
+            </div>
+          ) : (
+            <div className="mt-2 flex items-center gap-2">
+              <input
+                type="date"
+                value={deadline}
+                onChange={(event) => setDeadline(event.target.value || null)}
+                className="min-h-[44px] flex-1 rounded-card border border-hairline bg-surface px-3 text-field font-semibold text-ink"
+              />
+              <button
+                type="button"
+                onClick={() => setDeadline(null)}
+                className="min-h-[44px] shrink-0 rounded-full bg-chip px-4 text-field font-semibold text-chip-fg"
+              >
+                없음
+              </button>
+            </div>
+          )}
         </section>
 
         {saveError && (
